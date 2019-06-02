@@ -6,6 +6,7 @@
 #define BACONS_LAW_SRC_PARSER_H_
 
 #include "mylib.h"
+#include <string>
 
 class Parser {
 

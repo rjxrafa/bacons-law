@@ -6,19 +6,21 @@
 
 Parser::Parser() {
   while (!OpenFile(Parser::FILE_OPEN::INPUT));
-  int l;
   std::string temp;
   std::string name_identifier, name;
+  int name_int;
 
+  //skipping first line
+  getline(in, temp);
+  //for names
   for (int i = 0; !in.eof(); ++i) {
     getline(in, name_identifier, '\t');
     getline(in, name, '\t');
     getline(in, temp);
-   // printf("%d: %s, %s\n", i, name_identifier.c_str(), name.c_str());
-    //std::cout<<i<<std::endl;
-    l=i;
+    name_identifier.erase(0,2);
+    printf("%d: %s, %s\n", i, name_identifier.c_str(), name.c_str());
+    name_int = std::stoi(name_identifier);
   }
-  std::cout<<l<<std::endl;
   in.close();
 
 }
@@ -31,7 +33,7 @@ bool Parser::OpenFile(Parser::FILE_OPEN type) {
     while (1) {
       while(!GetInput(input, "Enter filename: "));
 
-      in.open(input);
+      in.open("1.tsv");//1 is names
 
       if (in.good()) {
         printf("File opened!\n");
