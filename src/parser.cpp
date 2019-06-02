@@ -15,6 +15,7 @@ Parser::Parser() {
   std::string nconst, name, tconst, category, title, lang;
   int name_int;
 
+  in.clear();
   //for names
   if(OpenFile(Parser::FILE_OPEN::INPUT,"1.tsv"))
   {
@@ -32,6 +33,7 @@ Parser::Parser() {
       in.close();
   }
 
+  in.clear();
 //  for nameid to movie title
   if(OpenFile(Parser::FILE_OPEN::INPUT,"2.tsv"))
   {
@@ -40,11 +42,13 @@ Parser::Parser() {
       for (int i = 0; !in.eof(); ++i) {
           in>>tconst>>temp>>nconst>>category;
           getline(in, temp);
-          if(category[0] == 'a');//do something;
-         // printf("%d: %s, %s, %s\n", i, tconst.c_str(), nconst.c_str(), category.c_str());
+          if(in.eof());//do something;
+          printf("%d: %s, %s, %s\n", i, tconst.c_str(), nconst.c_str(), category.c_str());
       }
       in.close();
   }
+
+  in.clear();
 //  for title id to title name
   if(OpenFile(Parser::FILE_OPEN::INPUT,"3.tsv"))
   {
