@@ -1,6 +1,7 @@
-//
-// Created by rafab on 6/1/2019.
-//
+/****
+ * @author      Rafael Betita & Ara Mico Segismundo
+ * @modified    06-1-2019
+ ****/
 
 #ifndef BACONS_LAW_INCLUDE_MYLIB_H_
 #define BACONS_LAW_INCLUDE_MYLIB_H_
