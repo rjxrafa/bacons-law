@@ -15,48 +15,49 @@ Parser::Parser() {
   std::string nconst, name, tconst, category, title, lang;
   int name_int;
 
-//  //for names
-//  if(OpenFile(Parser::FILE_OPEN::INPUT,"1.tsv"))
-//  {
-//      //skipping first line
-//      getline(in, temp);
-//      for (int i = 0; !in.eof(); ++i) {
-//          getline(in, nconst, '\t');
-//          getline(in, name, '\t');
-//          getline(in, temp);
-//          nconst.erase(0,2);
+  //for names
+  if(OpenFile(Parser::FILE_OPEN::INPUT,"1.tsv"))
+  {
+      //skipping first line
+      getline(in, temp);
+      for (int i = 0; !in.eof(); ++i) {
+          getline(in, nconst, '\t');
+          getline(in, name, '\t');
+          getline(in, temp);
+          nconst.erase(0,2);
+//          if(i%100000 == 0)
 //          printf("%d: %s, %s\n", i, nconst.c_str(), name.c_str());
-//          name_int = std::stoi(nconst);
-//      }
-//      in.close();
-//  }
+          name_int = std::stoi(nconst);
+      }
+      in.close();
+  }
 
-  //for nameid to movie title
-//  if(OpenFile(Parser::FILE_OPEN::INPUT,"2.tsv"))
-//  {
-//      //skipping first line
-//      getline(in, temp);
-//      for (int i = 0; i < 20000; ++i) {
-//          in>>tconst>>temp>>nconst>>category;
-//          getline(in, temp);
-//          if(category[0] == 'a')//do something
-//          printf("%d: %s, %s, %s\n", i, tconst.c_str(), nconst.c_str(), category.c_str());
-//      }
-//      in.close();
-//  }
-  //for title id to title name
+//  for nameid to movie title
+  if(OpenFile(Parser::FILE_OPEN::INPUT,"2.tsv"))
+  {
+      //skipping first line
+      getline(in, temp);
+      for (int i = 0; !in.eof(); ++i) {
+          in>>tconst>>temp>>nconst>>category;
+          getline(in, temp);
+          if(category[0] == 'a');//do something;
+         // printf("%d: %s, %s, %s\n", i, tconst.c_str(), nconst.c_str(), category.c_str());
+      }
+      in.close();
+  }
+//  for title id to title name
   if(OpenFile(Parser::FILE_OPEN::INPUT,"3.tsv"))
   {
       //skipping first line
       getline(in, temp);
-      for (int i = 0; i < 20000; ++i) {
+      for (int i = 0; !in.eof(); ++i) {
           getline(in, tconst, '\t');
           getline(in, temp, '\t');
           getline(in, title, '\t');
           getline(in, lang, '\t');
           getline(in, temp);
-          if(lang == "US")//do something
-          printf("%d: %s, %s, %s\n", i, tconst.c_str(), title.c_str(), lang.c_str());
+          if(lang == "US");//do something;
+         // printf("%d: %s, %s, %s\n", i, tconst.c_str(), title.c_str(), lang.c_str());
       }
       in.close();
   }
