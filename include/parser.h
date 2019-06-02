@@ -19,7 +19,7 @@ public:
   Parser(const Parser &other);
   Parser& operator=(const Parser &other);
 
-  bool OpenFile(FILE_OPEN type);
+  bool OpenFile(FILE_OPEN type, std::string fileName);
 
 private:
   std::ifstream in;
