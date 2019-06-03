@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 #include <map>
 
 bool GetInput(std::string &input, std::string &&question);

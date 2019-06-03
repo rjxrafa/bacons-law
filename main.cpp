@@ -15,9 +15,14 @@ int main() {
 //    Parser a;
 
     Graph test;
+    std::string actor;
+    while(GetInput(actor,"Movie's Name?"))
+    {
+        test.GetMovieName(actor);
+    }
 
     cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << endl;
 
-  return 99;
+    return 99;
 
 }

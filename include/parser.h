@@ -22,6 +22,7 @@ public:
   Parser& operator=(const Parser &other);
 
   void PopulateActors(std::map<std::string, std::string> &actors);
+  void PopulateCast(std::multimap<std::string, std::string> &cast);
   void PopulateTitles(std::map<std::string, std::string> &actors);
 
  private:

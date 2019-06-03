@@ -39,24 +39,26 @@ void Parser::PopulateActors(std::map<std::string, std::string> &actors) {
   }
 }
 
-void Parser::PopulateCast(std::map<std::string, std::string> &movies) {
+void Parser::PopulateCast(std::multimap<std::string, std::string> &cast) {
 
   std::string temp,     // Placeholder string
-              tconst,   // Actor ID
-              name;     // Actor Name
+              tconst,   // Title ID
+              nconst,   // Name ID
+              category; // Job
 
-//  Casting info w/ movie id
-//  if(OpenFile(Parser::FILE_OPEN::INPUT,"cast.tsv"))
-//  {
-//    getline(in, temp); // skips first line
-//    for (int i = 0; !in.eof(); ++i) {
-//      in>>tconst>>temp>>nconst>>category;
-//      getline(in, temp);
-//      if(category[0] == 'a')
+  //Casting info w/ movie id
+  if(OpenFile(Parser::FILE_OPEN::INPUT,"cast.tsv"))
+  {
+    getline(in, temp); // skips first line
+    for (int i = 0; !in.eof(); ++i) {
+      in>>tconst>>temp>>nconst>>category;
+      getline(in, temp);
+      if(category[0] == 'a')
+          cast.insert(str_pair(tconst, nconst));
 //        printf("%d: %s, %s, %s\n", i, tconst.c_str(), nconst.c_str(), category.c_str());
-//    }
-//    in.close();
-//  }
+    }
+    in.close();
+  }
 }
 
 /**
