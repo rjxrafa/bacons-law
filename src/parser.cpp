@@ -20,46 +20,71 @@ Parser::Parser() {
  *
  * @param actors
  */
-void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<actor_pair>& actor) {
+void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<std::string*> &actorMovs) {
 
   std::string temp,     // Placeholder string
               nconst,   // Actor ID
               name;     // Actor Name
 
-  if (OpenFile(FILE_OPEN::INPUT, "actors.tsv")) {
-    std::getline(in, temp); // skip first line
-    for (int i = 0; !in.eof(); ++i) {
-      std::getline(in, nconst, '\t');
-      std::getline(in, name, '\t');
-      std::getline(in, temp, '\n');
+  if (OpenFile(FILE_OPEN::INPUT, "actors.tsv"))
+  {
+      std::getline(in, temp); // skip first line
+      for (int i = 0; !in.eof(); ++i) {
+          std::getline(in, nconst, '\t');
+          std::getline(in, name, '\t');
+          std::getline(in, temp, '\n');
 
-      auto *v = new std::vector<std::string>;
-      actor.push_back(actor_pair(name, v));
-      actorID.insert(str_int_pair(nconst, i));
-    }
-    in.close();
+          actorID.insert(str_int_pair(nconst, i));
+
+          std::string *s = new std::string[2];
+          s[0] = name;
+          s[1] = "";
+          actorMovs.push_back(s);
+      }
+      in.close();
   }
 }
 
-void Parser::PopulateCast(std::multimap<std::string, std::string> &cast) {
+void Parser::PopulateCast(std::map<std::string, int> &actorID, std::vector<std::string*> &actorMovs, std::vector<std::string *> &movieC,
+                          std::map<std::string, int> &movieID) {
 
   std::string temp,     // Placeholder string
               tconst,   // Title ID
               nconst,   // Name ID
               category; // Job
 
+  int index = 0;
   //Casting info w/ movie id
   if(OpenFile(Parser::FILE_OPEN::INPUT,"cast.tsv"))
   {
-    getline(in, temp); // skips first line
-    for (int i = 0; !in.eof(); ++i) {
-      in>>tconst>>temp>>nconst>>category;
-      getline(in, temp);
-//      if(category[0] == 'a')
-//          cast.insert(str_pair(tconst, nconst));
-//        printf("%d: %s, %s, %s\n", i, tconst.c_str(), nconst.c_str(), category.c_str());
-    }
-    in.close();
+      getline(in, temp); // skips first line
+      for (int i = 0; !in.eof(); ++i) {
+          in>>tconst>>temp>>nconst>>category;
+          getline(in, temp);
+          if(category[0] == 'a' && actorID.count(nconst))
+          {
+              actorMovs[actorID[nconst]][1] += tconst + ' '; // push movie followed by space
+
+              if(!movieID.count(tconst))
+              {
+                  movieID.insert(str_int_pair(tconst, index));
+                  ++index;
+                  std::string *s = new std::string[2];
+                  s[0] = "";
+                  s[1] += nconst + ' '; //push crew followed by space
+                  movieC.push_back(s); //push back into [0] movie [1] crew;
+              }
+              else
+              {
+                  movieC[movieID[tconst]][1] += nconst + ' ';
+              }
+          }
+
+          //          movies[actorID[nconst]].second->push_back(tconst);
+          //          cast.insert(str_pair(tconst, nconst));
+          //        printf("%d: %s, %s, %s\n", i, tconst.c_str(), nconst.c_str(), category.c_str());
+      }
+      in.close();
   }
 }
 
@@ -89,7 +114,7 @@ void Parser::PopulateTitles(std::map<std::string, std::string> &movie_titles) {
       getline(in, lang, '\t');
       getline(in, temp);
       if(lang == "US") {
-//        movie_titles.insert(str_pair(tconst, title));
+        movie_titles.insert(str_pair(tconst, title));
       }
     }
     in.close();

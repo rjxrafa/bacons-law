@@ -6,7 +6,6 @@
 #ifndef BACONS_LAW_INCLUDE_GRAPH_H_
 #define BACONS_LAW_INCLUDE_GRAPH_H_
 
-#include "mylib.h"
 #include "parser.h"
 
 class Graph {
@@ -24,10 +23,13 @@ class Graph {
 
  private:
   Parser parser_;
-  std::vector<actor_pair> actor_;
-  std::map<std::string, int> actors_; // Actor ID -> Actor Name
+//  std::vector<actor_pair> actor_;
+  std::vector<std::string*> actorMovies_; // [0]=name [1]=movie tconst
+  std::vector<std::string*> movieCrew_; //
+  std::map<std::string, int> mIndex_; // Movie ID -> Index
+  std::map<std::string, int> aIndex_; // Actor ID -> Index
   std::map<std::string, std::string> movies_; // Movie ID -> Movie Title
-  std::multimap <std::string, std::string> cast_; // Movie ID -> Actors
+//  std::multimap <std::string, std::string> cast_; // Movie ID -> Actors
 //  std::vector<std::string> movies_;
 //  std::vector<std::string> actors_;
 
