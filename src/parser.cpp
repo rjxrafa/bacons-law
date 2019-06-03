@@ -4,6 +4,7 @@
  ****/
 
 #include "../include/parser.h"
+#include "../include/graph.h"
 
 /**
  * @brief Parser::Parser
@@ -19,7 +20,7 @@ Parser::Parser() {
  *
  * @param actors
  */
-void Parser::PopulateActors(std::map<std::string, std::string> &actors) {
+void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<actor_pair>& actor) {
 
   std::string temp,     // Placeholder string
               nconst,   // Actor ID
@@ -32,8 +33,9 @@ void Parser::PopulateActors(std::map<std::string, std::string> &actors) {
       std::getline(in, name, '\t');
       std::getline(in, temp, '\n');
 
-      actors.insert(str_pair(nconst, name));
-
+      auto *v = new std::vector<std::string>;
+      actor.push_back(actor_pair(name, v));
+      actorID.insert(str_int_pair(nconst, i));
     }
     in.close();
   }
@@ -53,8 +55,8 @@ void Parser::PopulateCast(std::multimap<std::string, std::string> &cast) {
     for (int i = 0; !in.eof(); ++i) {
       in>>tconst>>temp>>nconst>>category;
       getline(in, temp);
-      if(category[0] == 'a')
-          cast.insert(str_pair(tconst, nconst));
+//      if(category[0] == 'a')
+//          cast.insert(str_pair(tconst, nconst));
 //        printf("%d: %s, %s, %s\n", i, tconst.c_str(), nconst.c_str(), category.c_str());
     }
     in.close();
@@ -87,7 +89,7 @@ void Parser::PopulateTitles(std::map<std::string, std::string> &movie_titles) {
       getline(in, lang, '\t');
       getline(in, temp);
       if(lang == "US") {
-        movie_titles.insert(str_pair(tconst, title));
+//        movie_titles.insert(str_pair(tconst, title));
       }
     }
     in.close();

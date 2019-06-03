@@ -6,7 +6,8 @@
 #ifndef BACONS_LAW_SRC_PARSER_H_
 #define BACONS_LAW_SRC_PARSER_H_
 
-#define str_pair std::pair<std::string, std::string>
+#define str_int_pair std::pair<std::string, int>
+#define actor_pair std::pair<std::string, std::vector<std::string>*>
 
 #include "mylib.h"
 #include <string>
@@ -21,9 +22,9 @@ public:
   Parser(const Parser &other);
   Parser& operator=(const Parser &other);
 
-  void PopulateActors(std::map<std::string, std::string> &actors);
   void PopulateCast(std::multimap<std::string, std::string> &cast);
   void PopulateTitles(std::map<std::string, std::string> &actors);
+  void PopulateActors(std::map<std::string, int> &actorID, std::vector<actor_pair>& actor);
 
  private:
   std::ifstream in;
