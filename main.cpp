@@ -16,12 +16,12 @@ int main() {
 
     Graph test;
     std::string actor;
+    cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << endl;
     while(GetInput(actor,"Movie's Name?"))
     {
-        test.GetMovieName(actor);
+        test.GetCast(actor);
     }
 
-    cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << endl;
 
     return 99;
 

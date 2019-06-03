@@ -7,7 +7,7 @@ Graph::Graph() {
 
 //    parser_.PopulateActors(actors_);
     parser_.PopulateCast(cast_);
-    parser_.PopulateTitles(movies_);
+//    parser_.PopulateTitles(movies_);
 
 }
 Graph::~Graph() {
@@ -31,8 +31,18 @@ void Graph::GetActorName(std::string &nconst)
 void Graph::GetCast(std::string &tconst)
 {
     if(cast_.count(tconst))
-
+    {
+        std::pair <std::multimap<std::string,std::string>::iterator, std::multimap<std::string,std::string>::iterator> ret;
+        ret = cast_.equal_range(tconst);
+        std::cout << tconst << " =>";
+        for (std::multimap<std::string,std::string>::iterator it=ret.first; it!=ret.second; ++it)
+            std::cout << ' ' << it->second;
+        std::cout << '\n';
+    }
+    else
+        std::cout<<"Movie or cast not found.\n";
 }
+
 void Graph::GetMovieName(std::string &tconst)
 {
     if(movies_.count(tconst))
