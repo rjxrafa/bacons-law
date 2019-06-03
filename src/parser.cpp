@@ -7,63 +7,88 @@
 
 /**
  * @brief Parser::Parser
- * tconst = title alphanumeric identifier
- * nconst = actor name alphanumeric identifier
+ * tconst : title alphanumeric identifier
+ * nconst : actor name alphanumeric identifier
  */
 Parser::Parser() {
-  std::string temp;
-  std::string nconst, name, tconst, category, title, lang;
-  int name_int;
 
-  in.clear();
-  //for names
-  if(OpenFile(Parser::FILE_OPEN::INPUT,"1.tsv"))
-  {
-      //skipping first line
-      getline(in, temp);
-      for (int i = 0; !in.eof(); ++i) {
-          getline(in, nconst, '\t');
-          getline(in, name, '\t');
-          getline(in, temp);
-          nconst.erase(0,2);
-//          if(i%100000 == 0)
-//          printf("%d: %s, %s\n", i, nconst.c_str(), name.c_str());
-          name_int = std::stoi(nconst);
-      }
-      in.close();
+}
+
+/**
+ * This function populates a given map with the key value pair of actor ids and their respective names.
+ *
+ * @param actors
+ */
+void Parser::PopulateActors(std::map<std::string, std::string> &actors) {
+
+  std::string temp,     // Placeholder string
+              nconst,   // Actor ID
+              name;     // Actor Name
+
+  if (OpenFile(FILE_OPEN::INPUT, "actors.tsv")) {
+    std::getline(in, temp); // skip first line
+    for (int i = 0; !in.eof(); ++i) {
+      std::getline(in, nconst, '\t');
+      std::getline(in, name, '\t');
+      std::getline(in, temp, '\n');
+
+      actors.insert(str_pair(nconst, name));
+
+    }
+    in.close();
   }
+}
 
-  in.clear();
-//  for nameid to movie title
-  if(OpenFile(Parser::FILE_OPEN::INPUT,"2.tsv"))
-  {
-      //skipping first line
-      getline(in, temp);
-      for (int i = 0; !in.eof(); ++i) {
-          in>>tconst>>temp>>nconst>>category;
-          getline(in, temp);
-          if(in.eof());//do something;
-          printf("%d: %s, %s, %s\n", i, tconst.c_str(), nconst.c_str(), category.c_str());
-      }
-      in.close();
-  }
+void Parser::PopulateCast(std::map<std::string, std::string> &movies) {
 
-  in.clear();
-//  for title id to title name
-  if(OpenFile(Parser::FILE_OPEN::INPUT,"3.tsv"))
+  std::string temp,     // Placeholder string
+              tconst,   // Actor ID
+              name;     // Actor Name
+
+//  Casting info w/ movie id
+//  if(OpenFile(Parser::FILE_OPEN::INPUT,"cast.tsv"))
+//  {
+//    getline(in, temp); // skips first line
+//    for (int i = 0; !in.eof(); ++i) {
+//      in>>tconst>>temp>>nconst>>category;
+//      getline(in, temp);
+//      if(category[0] == 'a')
+//        printf("%d: %s, %s, %s\n", i, tconst.c_str(), nconst.c_str(), category.c_str());
+//    }
+//    in.close();
+//  }
+}
+
+/**
+ * This function uses the dataset of 'titles.tsv' and parses for all US region movies and inserts them into a
+ * given map.
+ *
+ * Uses a key value pair of title ID against the movie title.
+ *
+ * @param movie_titles
+ */
+void Parser::PopulateTitles(std::map<std::string, std::string> &movie_titles) {
+  //  std::string temp;
+  std::string temp,     // Placeholder string
+              tconst,   // Title ID
+              title,    // Movie Title
+              lang;     // Region
+
+  //  Movie title & ID
+  if(OpenFile(Parser::FILE_OPEN::INPUT,"titles.tsv"))
   {
-      //skipping first line
+    getline(in, temp);  // Skip first line
+    for (int i = 0; !in.eof(); ++i) {
+      getline(in, tconst, '\t');
+      getline(in, temp, '\t');
+      getline(in, title, '\t');
+      getline(in, lang, '\t');
       getline(in, temp);
-      for (int i = 0; !in.eof(); ++i) {
-          getline(in, tconst, '\t');
-          getline(in, temp, '\t');
-          getline(in, title, '\t');
-          getline(in, lang, '\t');
-          getline(in, temp);
-          if(lang == "US");//do something;
-         // printf("%d: %s, %s, %s\n", i, tconst.c_str(), title.c_str(), lang.c_str());
+      if(lang == "US") {
+        movie_titles.insert(str_pair(tconst, title));
       }
-      in.close();
+    }
+    in.close();
   }
 }
 
@@ -75,7 +100,7 @@ bool Parser::OpenFile(Parser::FILE_OPEN type, std::string fileName) {
 //    while (1) {
 //      while(!GetInput(input, "Enter filename: "));
 
-      in.open(fileName);//1 is names
+  in.open(fileName);//1 is names
 
 //      if (in.good()) {
 //        printf("File opened!\n");
@@ -89,5 +114,6 @@ bool Parser::OpenFile(Parser::FILE_OPEN type, std::string fileName) {
 //  } else {
 
 //  }
-      return true;
+  return true;
 }
+

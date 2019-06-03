@@ -1,4 +1,5 @@
 #include "include/parser.h"
+#include "include/graph.h"
 #include <ctime>
 
 using namespace std;
@@ -11,9 +12,11 @@ int main() {
 //   printf("Time elapsed in ms: %f", elapsed);
     clock_t startTime = clock();
 
-    Parser a;
+//    Parser a;
 
-            cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << endl;
+    Graph test;
+
+    cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << endl;
 
   return 99;
 
