@@ -35,7 +35,7 @@ void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<std
           std::getline(in, temp, '\n');
 
           actorID.insert(str_int_pair(nconst, i));
-
+          //rafa tree overload [] use find to return an int
           std::string *s = new std::string[2];
           s[0] = name;
           s[1] = "";

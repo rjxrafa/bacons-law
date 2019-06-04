@@ -26,7 +26,7 @@ void Menu::Run()
         std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
         while(GetInput(actor,"Movie's Name?"))
         {
-
+            Kevin.GetActorName(actor);
         }
 
 }

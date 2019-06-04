@@ -24,7 +24,10 @@ Graph &Graph::operator=(const Graph &other) {
 void Graph::GetActorName(std::string &nconst)
 {
   if(aIndex_.count(nconst))
-    std::cout<<"Actor found "<<aIndex_[nconst]<<'\n';
+  {
+    std::cout<<"Actor found "<<actorMovies_[aIndex_[nconst]][0]<<'\n';
+    std::cout<<"Movies found "<<actorMovies_[aIndex_[nconst]][1]<<'\n';
+  }
   else
     std::cout<<"Actor not found.\n";
 }
