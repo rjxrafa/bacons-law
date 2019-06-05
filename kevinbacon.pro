@@ -8,12 +8,14 @@ SOURCES += \
     src/mylib.cpp \
     src/parser.cpp \
     src/graph.cpp \
-    menu.cpp
+    src/menu.cpp
 
 HEADERS += \
     include/mylib.h \
     include/parser.h \
     include/graph.h \
-    menu.h \
     include/actorcrew.h \
-    include/myqueue.h
+    include/myqueue.h \
+    include/avl.h \
+    include/menu.h \
+    include/node.h

@@ -13,6 +13,8 @@
 #include <iomanip>
 #include <cstdio>
 #include "actorcrew.h"
+#include "avl.h"
+#include "node.h"
 
 bool GetInput(std::string &input, std::string &&question);
 
