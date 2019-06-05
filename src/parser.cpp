@@ -24,7 +24,8 @@ void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<std
 
   std::string temp,     // Placeholder string
               nconst,   // Actor ID
-              name;     // Actor Name
+              name,     // Actor Name
+              titles;   // Top Movies
 
   if (OpenFile(FILE_OPEN::INPUT, "actors.tsv"))
   {
@@ -32,10 +33,16 @@ void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<std
       for (int i = 0; !in.eof(); ++i) {
           std::getline(in, nconst, '\t');
           std::getline(in, name, '\t');
-          std::getline(in, temp, '\n');
-
+          std::getline(in, temp, '\t');
+          std::getline(in, temp, '\t');
+          std::getline(in, temp, '\t');
+          std::getline(in, titles);
+          if(titles == "\\N")
+              titles = "0";
+          std::cout<<titles<<'\n';
           actorID.insert(str_int_pair(nconst, i));
           //rafa tree overload [] use find to return an int
+          //if titles == \n
           std::string *s = new std::string[2];
           s[0] = name;
           s[1] = "";
