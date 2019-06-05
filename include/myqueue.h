@@ -7,65 +7,64 @@
 #include <sstream>
 #include "node.h"
 
-using namespace std;
-
+namespace cs8 {
 template<typename T>
-class myQueue
+class Queue
 {
 public:
-    myQueue();
-    ~myQueue();
-    myQueue(const myQueue<T> &other);
-    myQueue<T>& operator=(const myQueue<T> &other);
+    Queue();
+    ~Queue();
+    Queue(const Queue<T> &other);
+    Queue<T>& operator=(const Queue<T> &other);
     void enqueue(const T &data);
     T dequeue();
     T frontOfQueue() const;
-    myQueue<T>& operator<<(const T &data);
-    myQueue<T>& operator>>(T &data);
-//    void resize(size_t newSize);
+    Queue<T>& operator<<(const T &data);
+    Queue<T>& operator>>(T &data);
+    //    void resize(size_t newSize);
     bool empty() const;
     bool full() const;
-//    int capacity() const;
+    //    int capacity() const;
     int size() const;
-    void merge(myQueue<T> &one,myQueue<T> &two,myQueue<T> &merged);
+    void merge(Queue<T> &one,Queue<T> &two,Queue<T> &merged);
 
     template<typename S>
     friend
-    ostream& operator<<(ostream &out, const myQueue<S> &other);
+    ostream& operator<<(ostream &out, const Queue<S> &other);
 
     template<typename S>
     friend
-    istream& operator>>(istream &in, myQueue<S> &other);
+    istream& operator>>(istream &in, Queue<S> &other);
 
 private:
     node<T> *front, *back;
     size_t mySize;
 
-    void copy(const myQueue<T> &other);
+    void copy(const Queue<T> &other);
     void deleteAll();
 };
 
 template<typename T>
-myQueue<T>::myQueue()
+Queue<T>::Queue()
 {
     mySize = 0;
     front = back = nullptr;
 }
 
 template<typename T>
-myQueue<T>::~myQueue()
+Queue<T>::~Queue()
 {
     deleteAll();
 }
 
 template<typename T>
-myQueue<T>::myQueue(const myQueue<T> &other)
+Queue<T>::Queue(const Queue<T> &other)
 {
     copy(other);
 }
 
 template<typename T>
-myQueue<T>& myQueue<T>::operator=(const myQueue<T> &other)
+Queue<T>& Queue<T>::operator=(const Queue<T> &other)
 {
     if(this != &other)
         copy(other);
@@ -73,7 +72,7 @@ myQueue<T>& myQueue<T>::operator=(const myQueue<T> &other)
 }
 
 template<typename T>
-void myQueue<T>::enqueue(const T &data)
+void Queue<T>::enqueue(const T &data)
 {
     if(full())
     {
@@ -93,29 +92,29 @@ void myQueue<T>::enqueue(const T &data)
 }
 
 template<typename T>
-void myQueue<T>::merge(myQueue<T> &one, myQueue<T> &two, myQueue<T> &merged)
+void Queue<T>::merge(Queue<T> &one, Queue<T> &two, Queue<T> &merged)
 {
     while(!two.empty() || !one.empty())
-    if((!two.empty()) && (two.frontOfQueue() <= one.frontOfQueue()))
-    {
-        if(!two.empty())
+        if((!two.empty()) && (two.frontOfQueue() <= one.frontOfQueue()))
         {
-        merged.enqueue(two.frontOfQueue());
-        two.dequeue();
+            if(!two.empty())
+            {
+                merged.enqueue(two.frontOfQueue());
+                two.dequeue();
+            }
         }
-    }
-    else
-    {
-        if(!one.empty())
+        else
         {
-        merged.enqueue(one.frontOfQueue());
-        one.dequeue();
+            if(!one.empty())
+            {
+                merged.enqueue(one.frontOfQueue());
+                one.dequeue();
+            }
         }
-    }
 }
 
 template<typename T>
-T myQueue<T>::dequeue()
+T Queue<T>::dequeue()
 {
     if(empty())
     {
@@ -130,7 +129,7 @@ T myQueue<T>::dequeue()
 }
 
 template<typename T>
-T myQueue<T>::frontOfQueue() const
+T Queue<T>::frontOfQueue() const
 {
     if(empty())
     {
@@ -141,14 +140,14 @@ T myQueue<T>::frontOfQueue() const
 }
 
 template<typename T>
-myQueue<T>& myQueue<T>::operator<<(const T &data)
+Queue<T>& Queue<T>::operator<<(const T &data)
 {
     enqueue(data);
     return *this;
 }
 
 template<typename T>
-myQueue<T>& myQueue<T>::operator>>(T &data)
+Queue<T>& Queue<T>::operator>>(T &data)
 {
     data = dequeue();
     return *this;
@@ -175,20 +174,20 @@ myQueue<T>& myQueue<T>::operator>>(T &data)
 //}
 
 template<typename T>
-bool myQueue<T>::empty() const
+bool Queue<T>::empty() const
 {
     return !mySize;
 }
 
 template<typename T>
-bool myQueue<T>::full() const
+bool Queue<T>::full() const
 {
     //queue will never be full
     return false;
 }
 
 template<typename T>
-void myQueue<T>::copy(const myQueue<T> &other)
+void Queue<T>::copy(const Queue<T> &other)
 {
     mySize = other.mySize;
     if(!other.empty())
@@ -205,7 +204,7 @@ void myQueue<T>::copy(const myQueue<T> &other)
 }
 
 template<typename T>
-void myQueue<T>::deleteAll()
+void Queue<T>::deleteAll()
 {
     for(node<T> *toBeDeleted;
         front != nullptr; toBeDeleted = front,
@@ -221,13 +220,13 @@ void myQueue<T>::deleteAll()
 //    return myCapacity;
 //}
 template<typename T>
-int myQueue<T>::size() const
+int Queue<T>::size() const
 {
     return mySize;
 }
 
 template<typename S>
-ostream& operator<<(ostream &out, const myQueue<S> &other)
+ostream& operator<<(ostream &out, const Queue<S> &other)
 {
     if(&out != &cout)
     {
@@ -241,7 +240,7 @@ ostream& operator<<(ostream &out, const myQueue<S> &other)
 }
 
 template<typename S>
-istream& operator>>(istream &in, myQueue<S> &other)
+istream& operator>>(istream &in, Queue<S> &other)
 {
     if(&in != &cin)
     {
@@ -250,8 +249,8 @@ istream& operator>>(istream &in, myQueue<S> &other)
         getline(in, line);
         stringstream ss;
         ss<<line.substr(line.find(':')+1);
-//        ss>>size;
-        myQueue<S> temp;
+        //        ss>>size;
+        Queue<S> temp;
         S data;
         while(in>>data)
             other<<data;
@@ -259,5 +258,8 @@ istream& operator>>(istream &in, myQueue<S> &other)
     }
     return in;
 }
+} // namespace
+
+
 
 #endif // MYQUEUE_H

@@ -21,10 +21,10 @@ public:
   Parser(const Parser &other);
   Parser& operator=(const Parser &other);
 
-  void PopulateCast(std::map<std::string, int> &actorID, std::vector<std::string *> &actorMovs, std::vector<std::string *> &movieC,
+  void PopulateCast(std::map<std::string, int> &actorID, std::vector<Actor *> &actorMovs, std::vector<std::string *> &movieC,
                     std::map<std::string, int> &movieID);
   void PopulateTitles(std::map<std::string, std::string> &actors);
-  void PopulateActors(std::map<std::string, int> &actorID, std::vector<std::string*> &actorMovs);
+  void PopulateActors(std::map<std::string, int> &actorID, std::vector<Actor *> &actorMovs);
 
  private:
   std::ifstream in;

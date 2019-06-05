@@ -20,32 +20,41 @@ Parser::Parser() {
  *
  * @param actors
  */
-void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<std::string*> &actorMovs) {
+void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<Actor*> &actorMovs) {
 
   std::string temp,     // Placeholder string
               nconst,   // Actor ID
-              name;     // Actor Name
+              name,     // Actor Name
+              titles;   // Top Movies
 
   if (OpenFile(FILE_OPEN::INPUT, "actors.tsv"))
   {
-      std::getline(in, temp); // skip first line
+      getline(in, temp); // skip first line
       for (int i = 0; !in.eof(); ++i) {
-          std::getline(in, nconst, '\t');
-          std::getline(in, name, '\t');
-          std::getline(in, temp, '\n');
-
+          getline(in, nconst, '\t');
+          getline(in, name, '\t');
+          getline(in, temp, '\t');
+          getline(in, temp, '\t');
+          getline(in, temp, '\t');
+          getline(in, titles);
+          if(titles == "\\N")
+              titles = "0";
+          nconst.erase(0,2);
+        //  std::cout<<titles<<'\n';
           actorID.insert(str_int_pair(nconst, i));
           //rafa tree overload [] use find to return an int
-          std::string *s = new std::string[2];
-          s[0] = name;
-          s[1] = "";
+          //if titles == \n
+          Actor *s = new Actor();
+          s->actorID = stoi(nconst);
+          s->hasBeenUsed = false;
+          s->famousMovies.push_back(323);
           actorMovs.push_back(s);
       }
       in.close();
   }
 }
 
-void Parser::PopulateCast(std::map<std::string, int> &actorID, std::vector<std::string*> &actorMovs, std::vector<std::string *> &movieC,
+void Parser::PopulateCast(std::map<std::string, int> &actorID, std::vector<Actor*> &actorMovs, std::vector<std::string *> &movieC,
                           std::map<std::string, int> &movieID) {
 
   std::string temp,     // Placeholder string
@@ -59,11 +68,16 @@ void Parser::PopulateCast(std::map<std::string, int> &actorID, std::vector<std::
   {
       getline(in, temp); // skips first line
       for (int i = 0; !in.eof(); ++i) {
-          in>>tconst>>temp>>nconst>>category;
+          getline(in,tconst,'\t');
+          getline(in,temp,'\t');
+          getline(in,nconst,'\t');
+          getline(in,category,'\t');
           getline(in, temp);
+          tconst.erase(0,2);
+          nconst.erase(0,2);
           if(category[0] == 'a' && actorID.count(nconst))
           {
-              actorMovs[actorID[nconst]][1] += tconst + ' '; // push movie followed by space
+              actorMovs[actorID[nconst]]->movies.push_back(stoi(tconst));// push movie followed by space
 
               if(!movieID.count(tconst))
               {

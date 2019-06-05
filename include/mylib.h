@@ -12,6 +12,7 @@
 #include <map>
 #include <iomanip>
 #include <cstdio>
+#include "actorcrew.h"
 
 bool GetInput(std::string &input, std::string &&question);
 
