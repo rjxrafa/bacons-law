@@ -8,6 +8,7 @@
 #include "node.h"
 
 namespace cs8 {
+using namespace std;
 template<typename T>
 class Queue
 {
@@ -37,7 +38,7 @@ public:
     istream& operator>>(istream &in, Queue<S> &other);
 
 private:
-    node<T> *front, *back;
+    Q::node<T> *front, *back;
     size_t mySize;
 
     void copy(const Queue<T> &other);
@@ -78,7 +79,7 @@ void Queue<T>::enqueue(const T &data)
     {
         cout<<"Queue is full"<<endl;
     }
-    node<T> *newNode = new node<T>(data);
+    Q::node<T> *newNode = new Q::node<T>(data);
     if(empty())
     {
         front = back = newNode;
@@ -121,7 +122,7 @@ T Queue<T>::dequeue()
         cout<<"Empty Queue"<<endl;
     }
     T data = front->data;
-    node<T> *toBeDeleted = front;
+    Q::node<T> *toBeDeleted = front;
     front = front->next;
     delete toBeDeleted;
     --mySize;
@@ -193,11 +194,11 @@ void Queue<T>::copy(const Queue<T> &other)
     if(!other.empty())
     {
         deleteAll();
-        front = new node<T>(*other.front);
+        front = new Q::node<T>(*other.front);
         back = front;
-        for(node<T> *tempPtr = other.front->next; tempPtr != nullptr; tempPtr = tempPtr->next)
+        for(Q::node<T> *tempPtr = other.front->next; tempPtr != nullptr; tempPtr = tempPtr->next)
         {
-            back->next = new node<T>(*tempPtr);
+            back->next = new Q::node<T>(*tempPtr);
             back = back->next;
         }
     }
@@ -206,7 +207,7 @@ void Queue<T>::copy(const Queue<T> &other)
 template<typename T>
 void Queue<T>::deleteAll()
 {
-    for(node<T> *toBeDeleted;
+    for(Q::node<T> *toBeDeleted;
         front != nullptr; toBeDeleted = front,
         front = front->next,
         delete toBeDeleted);
@@ -232,7 +233,7 @@ ostream& operator<<(ostream &out, const Queue<S> &other)
     {
         out<<"Size: "<<other.size()<<endl;
     }
-    for(node<S> *toBePrinted = other.front; toBePrinted != nullptr; toBePrinted = toBePrinted->next)
+    for(Q::node<S> *toBePrinted = other.front; toBePrinted != nullptr; toBePrinted = toBePrinted->next)
     {
         out<<*toBePrinted<<" ";
     }

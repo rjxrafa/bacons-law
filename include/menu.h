@@ -4,6 +4,7 @@
 #include "parser.h"
 #include "graph.h"
 #include "mylib.h"
+#include "myqueue.h"
 #include <ctime>
 
 class Menu

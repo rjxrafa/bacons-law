@@ -16,7 +16,12 @@ int main() {
 
   std::cout << a;
 
-  std::cout << a[5];
+  std::cout << a[5] << std::endl;
+
+  cs8::Queue<int> b;
+  b << 1;
+  b << 2;
+  cout<<b;
 
   return 0;
 }
