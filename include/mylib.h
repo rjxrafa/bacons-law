@@ -10,6 +10,7 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include "actorcrew.h"
 
 bool GetInput(std::string &input, std::string &&question);
 
