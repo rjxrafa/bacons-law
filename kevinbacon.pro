@@ -15,4 +15,5 @@ HEADERS += \
     include/parser.h \
     include/graph.h \
     menu.h \
-    include/actorcrew.h
+    include/actorcrew.h \
+    include/myqueue.h
