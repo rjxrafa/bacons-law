@@ -8,10 +8,8 @@
 
 #define str_pair std::pair<std::string, std::string>
 #define str_int_pair std::pair<std::string, int>
-#define actor_pair std::pair<std::string, std::vector<std::string>*>
 
 #include "mylib.h"
-#include <string>
 
 class Parser {
 

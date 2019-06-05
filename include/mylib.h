@@ -11,6 +11,8 @@
 #include <vector>
 #include <map>
 #include "actorcrew.h"
+#include <iomanip>
+#include <cstdio>
 
 bool GetInput(std::string &input, std::string &&question);
 
