@@ -7,6 +7,7 @@
 #define BACONS_LAW_INCLUDE_GRAPH_H_
 
 #include "parser.h"
+#include "actorcrew.h"
 
 class Graph {
 

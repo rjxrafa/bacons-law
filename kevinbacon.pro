@@ -14,4 +14,5 @@ HEADERS += \
     include/mylib.h \
     include/parser.h \
     include/graph.h \
-    menu.h
+    menu.h \
+    include/actorcrew.h
