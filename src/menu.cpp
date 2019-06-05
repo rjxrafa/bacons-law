@@ -1,14 +1,8 @@
-#include "menu.h"
+#include "../include/menu.h"
 
-Menu::Menu()
-{
+Menu::Menu() = default;
 
-}
-
-Menu::~Menu()
-{
-
-}
+Menu::~Menu() = default;
 
 void Menu::Run()
 {

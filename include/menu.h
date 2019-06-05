@@ -1,9 +1,9 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "include/parser.h"
-#include "include/graph.h"
-#include "include/mylib.h"
+#include "parser.h"
+#include "graph.h"
+#include "mylib.h"
 #include <ctime>
 
 class Menu

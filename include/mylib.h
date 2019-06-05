@@ -10,6 +10,8 @@
 #include <fstream>
 #include <vector>
 #include <map>
+#include <iomanip>
+#include <cstdio>
 
 bool GetInput(std::string &input, std::string &&question);
 
