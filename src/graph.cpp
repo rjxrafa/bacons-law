@@ -2,8 +2,8 @@
 
 Graph::Graph() {
 
-    parser_.PopulateActors(aIndex_, actorMovies_);
-    parser_.PopulateCast(aIndex_, actorMovies_, movieCrew_, mIndex_);
+    parser_.PopulateActors(actorIndex_, actorMovies_);
+    parser_.PopulateCast(actorIndex_, actorMovies_, movieCrew_, movieIndex_);
   //  parser_.PopulateTitles(movies_);
 
 }
@@ -20,7 +20,7 @@ Graph &Graph::operator=(const Graph &other) {
 
 void Graph::GetActorName(std::string &nconst)
 {
-  if(aIndex_.count(nconst))
+  if(actorIndex_.count(nconst))
   {
 //    std::cout<<"Actor found "<<actorMovies_[aIndex_[nconst]][0]<<'\n';
 //    std::cout<<"Movies found "<<actorMovies_[aIndex_[nconst]][1]<<'\n';
@@ -52,9 +52,9 @@ void Graph::GetMovieName(std::string &tconst)
     std::cout<<"Movie not found.\n";
 }
 
-void Graph::BreadthFirstSearch(std::string &nconst) {
+void Graph::BreadthFirstSearch(std::string &actorName) {
 //  std::queue<std::string>
-//nm0000102    Kevin Bacon    1958
+//nm0000102    Kevin Bacon    1958 nm0000102 is 102 in int
     cs8::Queue<int> sixDegrees;
     int actor;
 
@@ -62,24 +62,25 @@ void Graph::BreadthFirstSearch(std::string &nconst) {
     {
         actorMovies_[i]->visited = false;
     }
+    //TODO:
     //name to nconst
     //nconst to fakeptr
-    sixDegrees.enqueue(actorMovies_[aIndex_[nconst]]->actorID);
+    sixDegrees.enqueue(actorMovies_[actorIndex_[actorName]]->actorID);
 
     while(!sixDegrees.empty())
     {
         sixDegrees >> actor;
 
-        if(!actorMovies_[aIndex_[nconst]]->visited)
+        if(!actorMovies_[actorIndex_[actorName]]->visited)
         {
-            actorMovies_[aIndex_[nconst]]->visited = true;
+            actorMovies_[actorIndex_[actorName]]->visited = true;
             //search each of their movie
-            for(unsigned int j = 0; j < actorMovies_[aIndex_[nconst]]->movies.size(); ++j)
+            for(unsigned int j = 0; j < actorMovies_[actorIndex_[actorName]]->movies.size(); ++j)
             {
                 //tconst = actorMovies_[aIndex_[nconst]]->movies[j];
-                for(unsigned int i = 0; i < movieCrew_[mIndex_["tconst"]]->actors.size(); ++i)
+                for(unsigned int i = 0; i < movieCrew_[movieIndex_["tconst"]]->actors.size(); ++i)
                 {
-                    if( movieCrew_[mIndex_["tconst"]]->actors[i] == 102)
+                    if( movieCrew_[movieIndex_["tconst"]]->actors[i] == 102)
                     {
                         //kevin bacon found yay
                         return;

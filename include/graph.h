@@ -21,15 +21,15 @@ class Graph {
   void GetActorName(std::string &nconst);
   void GetCast(std::string &tconst);
   void GetMovieName(std::string &tconst);
-  void BreadthFirstSearch(std::string &nconst);
+  void BreadthFirstSearch(std::string &actorName);
 
  private:
   Parser parser_;
 //  std::vector<actor_pair> actor_;
   std::vector<Actor*> actorMovies_; // [0]=name [1]=movie tconst
   std::vector<Crew*> movieCrew_; //
-  std::map<std::string, int> mIndex_; // Movie ID -> Index
-  std::map<std::string, int> aIndex_; // Actor ID -> Index
+  std::map<std::string, int> movieIndex_; // Movie ID -> Index
+  std::map<std::string, int> actorIndex_; // Actor ID -> Index
   std::map<std::string, std::string> movies_; // Movie ID -> Movie Title
 //  std::multimap <std::string, std::string> cast_; // Movie ID -> Actors
 //  std::vector<std::string> movies_;
