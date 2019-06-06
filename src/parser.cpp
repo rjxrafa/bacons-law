@@ -45,7 +45,7 @@ void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<Act
           //if titles == \n
           Actor *s = new Actor();
           s->actorID = stoi(nconst);
-          s->hasBeenUsed = false;
+          //s->hasBeenUsed = false;
           if(titles != "\\N")
           {
               if(titles.find(',') != std::string::npos)
@@ -101,7 +101,7 @@ void Parser::PopulateCast(std::map<std::string, int> &actorID, std::vector<Actor
                   ++index;
                   Crew *s = new Crew();
                   s->movieID = stoi(tconst);
-                  s->hasBeenUsed = false;
+                  //s->hasBeenUsed = false;
                   s->actors.push_back(stoi(nconst));
                   movieC.push_back(s); //push back into [0] movie [1] crew;
               }

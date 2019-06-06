@@ -8,7 +8,8 @@ Graph::Graph() {
 
 }
 Graph::~Graph() {
-
+    actorMovies_.clear();
+    movieCrew_.clear();
 }
 Graph::Graph(const Graph &other) {
 
