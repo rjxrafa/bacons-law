@@ -12,6 +12,8 @@
 #include <map>
 #include <iomanip>
 #include <cstdio>
+#include <algorithm>
+#include <sstream>
 #include "actorcrew.h"
 #include "avl.h"
 #include "node.h"

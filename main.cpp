@@ -4,24 +4,24 @@
 using namespace std;
 
 int main() {
-//    Menu sixDegrees;
-//
-//    sixDegrees.Run();
-  avl::BinaryTree<int> a;
-  a << 5;
-  a << 3;
-  a << 4;
-  a << 2;
-  a << 1;
+    Menu sixDegrees;
 
-  std::cout << a;
+    sixDegrees.Run();
+//  avl::BinaryTree<int> a;
+//  a << 5;
+//  a << 3;
+//  a << 4;
+//  a << 2;
+//  a << 1;
 
-  std::cout << a[5] << std::endl;
+//  std::cout << a;
 
-  cs8::Queue<int> b;
-  b << 1;
-  b << 2;
-  cout<<b;
+//  std::cout << a[5] << std::endl;
+
+//  cs8::Queue<int> b;
+//  b << 1;
+//  b << 2;
+//  cout<<b;
 
   return 0;
 }

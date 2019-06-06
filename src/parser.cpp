@@ -22,6 +22,7 @@ Parser::Parser() {
  */
 void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<Actor*> &actorMovs) {
 
+  std::stringstream ss;
   std::string temp,     // Placeholder string
               nconst,   // Actor ID
               name,     // Actor Name
@@ -37,8 +38,6 @@ void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<Act
           getline(in, temp, '\t');
           getline(in, temp, '\t');
           getline(in, titles);
-          if(titles == "\\N")
-              titles = "0";
           nconst.erase(0,2);
         //  std::cout<<titles<<'\n';
           actorID.insert(str_int_pair(nconst, i));
@@ -47,14 +46,31 @@ void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<Act
           Actor *s = new Actor();
           s->actorID = stoi(nconst);
           s->hasBeenUsed = false;
-          s->famousMovies.push_back(323);
+          if(titles != "\\N")
+          {
+              if(titles.find(',') != std::string::npos)
+              {
+                  std::replace(titles.begin(),titles.end(),',',' ');
+                  ss.str(titles);
+                  ss.clear();
+                  while(ss>>temp)
+                  {
+                      s->famousMovies.push_back(getPopularTitles(temp));
+                  }
+
+              }
+              else
+              {
+                  s->famousMovies.push_back(getPopularTitles(titles));
+              }
+          }
           actorMovs.push_back(s);
       }
       in.close();
   }
 }
 
-void Parser::PopulateCast(std::map<std::string, int> &actorID, std::vector<Actor*> &actorMovs, std::vector<std::string *> &movieC,
+void Parser::PopulateCast(std::map<std::string, int> &actorID, std::vector<Actor*> &actorMovs, std::vector<Crew*> &movieC,
                           std::map<std::string, int> &movieID) {
 
   std::string temp,     // Placeholder string
@@ -83,14 +99,15 @@ void Parser::PopulateCast(std::map<std::string, int> &actorID, std::vector<Actor
               {
                   movieID.insert(str_int_pair(tconst, index));
                   ++index;
-                  std::string *s = new std::string[2];
-                  s[0] = "";
-                  s[1] += nconst + ' '; //push crew followed by space
+                  Crew *s = new Crew();
+                  s->movieID = stoi(tconst);
+                  s->hasBeenUsed = false;
+                  s->actors.push_back(stoi(nconst));
                   movieC.push_back(s); //push back into [0] movie [1] crew;
               }
               else
               {
-                  movieC[movieID[tconst]][1] += nconst + ' ';
+                  movieC[movieID[tconst]]->actors.push_back(stoi(nconst));
               }
           }
 
@@ -158,5 +175,11 @@ bool Parser::OpenFile(Parser::FILE_OPEN type, std::string fileName) {
 
 //  }
   return true;
+}
+
+int Parser::getPopularTitles(std::string &title)
+{
+    title.erase(0,2);
+    return stoi(title);
 }
 

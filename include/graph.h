@@ -26,7 +26,7 @@ class Graph {
   Parser parser_;
 //  std::vector<actor_pair> actor_;
   std::vector<Actor*> actorMovies_; // [0]=name [1]=movie tconst
-  std::vector<std::string*> movieCrew_; //
+  std::vector<Crew*> movieCrew_; //
   std::map<std::string, int> mIndex_; // Movie ID -> Index
   std::map<std::string, int> aIndex_; // Actor ID -> Index
   std::map<std::string, std::string> movies_; // Movie ID -> Movie Title
