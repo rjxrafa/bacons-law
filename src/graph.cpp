@@ -54,12 +54,57 @@ void Graph::GetMovieName(std::string &tconst)
 
 void Graph::BreadthFirstSearch(std::string &nconst) {
 //  std::queue<std::string>
-    cs8::Queue<std::string> sixDegrees;
+//nm0000102    Kevin Bacon    1958
+    cs8::Queue<int> sixDegrees;
+    int actor;
 
     for(unsigned int i = 0; i < actorMovies_.size(); ++i)
     {
         actorMovies_[i]->visited = false;
     }
+    //name to nconst
+    //nconst to fakeptr
+    sixDegrees.enqueue(actorMovies_[aIndex_[nconst]]->actorID);
+
+    while(!sixDegrees.empty())
+    {
+        sixDegrees >> actor;
+
+        if(!actorMovies_[aIndex_[nconst]]->visited)
+        {
+            actorMovies_[aIndex_[nconst]]->visited = true;
+            //search each of their movie
+            for(unsigned int j = 0; j < actorMovies_[aIndex_[nconst]]->movies.size(); ++j)
+            {
+                //tconst = actorMovies_[aIndex_[nconst]]->movies[j];
+                for(unsigned int i = 0; i < movieCrew_[mIndex_["tconst"]]->actors.size(); ++i)
+                {
+                    if( movieCrew_[mIndex_["tconst"]]->actors[i] == 102)
+                    {
+                        //kevin bacon found yay
+                        return;
+                    }
+                    else
+                        std::cout<<'n';
+                        //mark movie visited queue those actors
+                }
+            }
+
+        }
+    }
+//    1  procedure BFS(G,start_v):
+//    2      let Q be a queue
+//    3      label start_v as discovered
+//    4      Q.enqueue(start_v)
+//    5      while Q is not empty
+//    6          v = Q.dequeue()
+//    7          if v is the goal:
+//    8              return v
+//    9          for all edges from v to w in G.adjacentEdges(v) do
+//    10             if w is not labeled as discovered:
+//    11                 label w as discovered
+//    12                 w.parent = v
+//    13                 Q.enqueue(w)
 //   BFS pseudocode
 //    Set all nodes to "not visited";
 
