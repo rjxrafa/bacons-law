@@ -54,4 +54,30 @@ void Graph::GetMovieName(std::string &tconst)
 
 void Graph::BreadthFirstSearch(std::string &nconst) {
 //  std::queue<std::string>
+    cs8::Queue<std::string> sixDegrees;
+
+    for(unsigned int i = 0; i < actorMovies_.size(); ++i)
+    {
+        actorMovies_[i]->visited = false;
+    }
+//   BFS pseudocode
+//    Set all nodes to "not visited";
+
+//   q = new Queue();
+
+//   q.enqueue(initial node);
+
+//   while ( q ≠ empty ) do
+//   {
+//      x = q.dequeue();
+
+//      if ( x has not been visited )
+//      {
+//         visited[x] = true;         // Visit node x !
+
+//         for ( every edge (x, y)  /* we are using all edges ! */ )
+//            if ( y has not been visited )
+//	       q.enqueue(y);       // Use the edge (x,y) !!!
+//      }
+//   }
 }

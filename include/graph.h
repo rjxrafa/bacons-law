@@ -8,6 +8,7 @@
 
 #include "parser.h"
 #include "actorcrew.h"
+#include "myqueue.h"
 
 class Graph {
 
