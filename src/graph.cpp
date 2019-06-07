@@ -71,9 +71,12 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
     {
         std::cout<<"Which actor \n";
         for(size_t i = 0; i < actor_to_id_[actorName].size(); ++i)
-            std::cout<<actor_to_id_[actorName][i]<<' ';
-        std::cout<<'\n';
+        {
+            for(size_t j = 0; j < actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies.size(); ++j)
+            std::cout<<i<<':'<<actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]<<'\n';
+        }
         std::cin >> actor;
+        actor = actor_to_id_[actorName][actor];
     }
 
     while(!sixDegrees.empty())
