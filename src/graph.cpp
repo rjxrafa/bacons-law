@@ -4,7 +4,7 @@ Graph::Graph() {
 
     parser_.PopulateActors(actor_to_id_,actorIndex_, actorMovies_);
     parser_.PopulateCast(actorIndex_, actorMovies_, movieCrew_, movieIndex_);
-  //  parser_.PopulateTitles(movies_);
+    parser_.PopulateTitles(movies_);
 
 }
 Graph::~Graph() {
@@ -44,7 +44,7 @@ void Graph::GetCast(int &tconst)
 //    std::cout<<"Movie or cast not found.\n";
 }
 
-void Graph::GetMovieName(std::string &tconst)
+void Graph::GetMovieName(int &tconst)
 {
   if(movies_.count(tconst))
     std::cout<<"Movie found "<<movies_[tconst]<<'\n';
@@ -73,7 +73,8 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
         for(size_t i = 0; i < actor_to_id_[actorName].size(); ++i)
         {
             for(size_t j = 0; j < actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies.size(); ++j)
-            std::cout<<i<<':'<<actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]<<'\n';
+            std::cout<<i<<':'<<movies_[actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]]<<' ';
+            std::cout<<'\n';
         }
         std::cin >> actor;
         actor = actor_to_id_[actorName][actor];

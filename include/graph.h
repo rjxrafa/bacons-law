@@ -20,7 +20,7 @@ class Graph {
 
   void GetActorName(int &nconst);
   void GetCast(int &tconst);
-  void GetMovieName(std::string &tconst);
+  void GetMovieName(int &tconst);
   void BreadthFirstSearch(std::string &actorName);
 
  private:
@@ -31,7 +31,7 @@ class Graph {
   std::map<std::string, std::vector<int>> actor_to_id_;
   std::map<int, int> movieIndex_; // Movie ID -> Index
   std::map<int, int> actorIndex_; // Actor ID -> Index
-  std::map<std::string, std::string> movies_; // Movie ID -> Movie Title
+  std::map<int, std::string> movies_; // Movie ID -> Movie Title
 //  std::multimap <std::string, std::string> cast_; // Movie ID -> Actors
 //  std::vector<std::string> movies_;
 //  std::vector<std::string> actors_;

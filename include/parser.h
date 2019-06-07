@@ -24,7 +24,7 @@ public:
 
   void PopulateCast(std::map<int, int> &actorID, std::vector<Actor *> &actorMovs, std::vector<Crew *> &movieCrew,
                     std::map<int, int> &movieID);
-  void PopulateTitles(std::map<std::string, std::string> &actors);
+  void PopulateTitles(std::map<int, std::string> &actors);
   void PopulateActors(std::map<std::string, std::vector<int> > &actorToId, std::map<int, int> &actorID, std::vector<Actor *> &actorMovs);
 
  private:

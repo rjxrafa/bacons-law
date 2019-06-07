@@ -137,7 +137,7 @@ void Parser::PopulateCast(std::map<int, int> &actorID, std::vector<Actor*> &acto
  *
  * @param movie_titles
  */
-void Parser::PopulateTitles(std::map<std::string, std::string> &movie_titles) {
+void Parser::PopulateTitles(std::map<int, std::string> &movie_titles) {
   //  std::string temp;
   std::string temp,     // Placeholder string
               tconst,   // Title ID
@@ -155,7 +155,8 @@ void Parser::PopulateTitles(std::map<std::string, std::string> &movie_titles) {
       getline(in, lang, '\t');
       getline(in, temp);
       if(lang == "US") {
-        movie_titles.insert(str_pair(tconst, title));
+        tconst.erase(0,2);
+        movie_titles.insert(std::pair<int, std::string>(stoi(tconst), title));
       }
     }
     in.close();
