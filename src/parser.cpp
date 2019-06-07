@@ -20,13 +20,14 @@ Parser::Parser() {
  *
  * @param actors
  */
-void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<Actor*> &actorMovs) {
+void Parser::PopulateActors(std::map<std::string, std::vector<int>> &actorToId, std::map<int, int> &actorID, std::vector<Actor*> &actorMovs) {
 
   std::stringstream ss;
   std::string temp,     // Placeholder string
               nconst,   // Actor ID
               name,     // Actor Name
               titles;   // Top Movies
+  int nconstInt;
 
   if (OpenFile(FILE_OPEN::INPUT, "actors.tsv"))
   {
@@ -39,13 +40,20 @@ void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<Act
           getline(in, temp, '\t');
           getline(in, titles);
           nconst.erase(0,2);
+          nconstInt = stoi(nconst);
         //  std::cout<<titles<<'\n';
-          actorID.insert(str_int_pair(nconst, i));
+          if(actorToId.count(name) == 0)
+          {
+              actorToId.insert(std::pair<std::string, std::vector<int>>(name, std::vector<int>()));
+              actorToId.at(name).push_back(nconstInt);
+          }
+          else
+              actorToId.at(name).push_back(nconstInt);
+          actorID.insert(int_pair(nconstInt, i));
           //rafa tree overload [] use find to return an int
           //if titles == \n
           Actor *s = new Actor();
-          s->actorID = stoi(nconst);
-          //s->hasBeenUsed = false;
+          s->actorID = nconstInt;
           if(titles != "\\N")
           {
               if(titles.find(',') != std::string::npos)
@@ -70,14 +78,14 @@ void Parser::PopulateActors(std::map<std::string, int> &actorID, std::vector<Act
   }
 }
 
-void Parser::PopulateCast(std::map<std::string, int> &actorID, std::vector<Actor*> &actorMovs, std::vector<Crew*> &movieC,
-                          std::map<std::string, int> &movieID) {
+void Parser::PopulateCast(std::map<int, int> &actorID, std::vector<Actor*> &actorMovs, std::vector<Crew*> &movieCrew,
+                          std::map<int, int> &movieID) {
 
   std::string temp,     // Placeholder string
               tconst,   // Title ID
               nconst,   // Name ID
               category; // Job
-
+  int nconstInt, tconstInt;
   int index = 0;
   //Casting info w/ movie id
   if(OpenFile(Parser::FILE_OPEN::INPUT,"cast.tsv"))
@@ -91,23 +99,25 @@ void Parser::PopulateCast(std::map<std::string, int> &actorID, std::vector<Actor
           getline(in, temp);
           tconst.erase(0,2);
           nconst.erase(0,2);
-          if(category[0] == 'a' && actorID.count(nconst))
+          tconstInt = stoi(tconst);
+          nconstInt = stoi(nconst);
+          if(category[0] == 'a' && actorID.count(nconstInt))
           {
-              actorMovs[actorID[nconst]]->movies.push_back(stoi(tconst));// push movie followed by space
+              actorMovs[actorID[nconstInt]]->movies.push_back(tconstInt);// push movie followed by space
 
-              if(!movieID.count(tconst))
+              if(!movieID.count(tconstInt))
               {
-                  movieID.insert(str_int_pair(tconst, index));
+                  movieID.insert(int_pair(tconstInt, index));
                   ++index;
                   Crew *s = new Crew();
-                  s->movieID = stoi(tconst);
+                  s->movieID = tconstInt;
                   //s->hasBeenUsed = false;
                   s->actors.push_back(stoi(nconst));
-                  movieC.push_back(s); //push back into [0] movie [1] crew;
+                  movieCrew.push_back(s); //push back into [0] movie [1] crew;
               }
               else
               {
-                  movieC[movieID[tconst]]->actors.push_back(stoi(nconst));
+                  movieCrew[movieID[tconstInt]]->actors.push_back(nconstInt);
               }
           }
 

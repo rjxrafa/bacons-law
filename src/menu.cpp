@@ -18,9 +18,9 @@ void Menu::Run()
         Graph Kevin;
         std::string actor;
         std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
-        while(GetInput(actor,"Movie's Name?"))
+        while(GetInput(actor,"Actor's name to find Bacon number?"))
         {
-            Kevin.GetActorName(actor);
+            Kevin.BreadthFirstSearch(actor);
         }
 
 }

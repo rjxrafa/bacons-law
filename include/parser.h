@@ -8,6 +8,7 @@
 
 #define str_pair std::pair<std::string, std::string>
 #define str_int_pair std::pair<std::string, int>
+#define int_pair std::pair<int, int>
 
 #include "mylib.h"
 
@@ -21,10 +22,10 @@ public:
   Parser(const Parser &other);
   Parser& operator=(const Parser &other);
 
-  void PopulateCast(std::map<std::string, int> &actorID, std::vector<Actor *> &actorMovs, std::vector<Crew *> &movieC,
-                    std::map<std::string, int> &movieID);
+  void PopulateCast(std::map<int, int> &actorID, std::vector<Actor *> &actorMovs, std::vector<Crew *> &movieCrew,
+                    std::map<int, int> &movieID);
   void PopulateTitles(std::map<std::string, std::string> &actors);
-  void PopulateActors(std::map<std::string, int> &actorID, std::vector<Actor *> &actorMovs);
+  void PopulateActors(std::map<std::string, std::vector<int> > &actorToId, std::map<int, int> &actorID, std::vector<Actor *> &actorMovs);
 
  private:
   int getPopularTitles(std::string &title);

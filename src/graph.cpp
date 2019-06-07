@@ -2,7 +2,7 @@
 
 Graph::Graph() {
 
-    parser_.PopulateActors(actorIndex_, actorMovies_);
+    parser_.PopulateActors(actor_to_id_,actorIndex_, actorMovies_);
     parser_.PopulateCast(actorIndex_, actorMovies_, movieCrew_, movieIndex_);
   //  parser_.PopulateTitles(movies_);
 
@@ -18,7 +18,7 @@ Graph &Graph::operator=(const Graph &other) {
   //  return <#initializer#>;
 }
 
-void Graph::GetActorName(std::string &nconst)
+void Graph::GetActorName(int &nconst)
 {
   if(actorIndex_.count(nconst))
   {
@@ -29,7 +29,7 @@ void Graph::GetActorName(std::string &nconst)
     std::cout<<"Actor not found.\n";
 }
 
-void Graph::GetCast(std::string &tconst)
+void Graph::GetCast(int &tconst)
 {
 //  if(cast_.count(tconst))
 //  {
@@ -65,31 +65,40 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
     //TODO:
     //name to nconst
     //nconst to fakeptr
-    sixDegrees.enqueue(actorMovies_[actorIndex_[actorName]]->actorID);
+    if(actor_to_id_.at(actorName).size() == 1)
+        sixDegrees.enqueue(actorMovies_[actorIndex_[actor_to_id_[actorName][0]]]->actorID);
+    else
+    {
+        std::cout<<"Which actor \n";
+        for(size_t i = 0; i < actor_to_id_[actorName].size(); ++i)
+            std::cout<<actor_to_id_[actorName][i]<<' ';
+        std::cout<<'\n';
+        std::cin >> actor;
+    }
 
     while(!sixDegrees.empty())
     {
         sixDegrees >> actor;
 
-        if(!actorMovies_[actorIndex_[actorName]]->visited)
+        if(!actorMovies_[actorIndex_[actor]]->visited)
         {
-            actorMovies_[actorIndex_[actorName]]->visited = true;
+            actorMovies_[actorIndex_[actor]]->visited = true;
             //search each of their movie
-            for(unsigned int j = 0; j < actorMovies_[actorIndex_[actorName]]->movies.size(); ++j)
-            {
-                //tconst = actorMovies_[aIndex_[nconst]]->movies[j];
-                for(unsigned int i = 0; i < movieCrew_[movieIndex_["tconst"]]->actors.size(); ++i)
-                {
-                    if( movieCrew_[movieIndex_["tconst"]]->actors[i] == 102)
-                    {
-                        //kevin bacon found yay
-                        return;
-                    }
-                    else
-                        std::cout<<'n';
-                        //mark movie visited queue those actors
-                }
-            }
+//            for(unsigned int j = 0; j < actorMovies_[actorIndex_[actor]]->movies.size(); ++j)
+//            {
+//                //tconst = actorMovies_[aIndex_[nconst]]->movies[j];
+//                for(unsigned int i = 0; i < movieCrew_[movieIndex_["tconst"]]->actors.size(); ++i)
+//                {
+//                    if( movieCrew_[movieIndex_["tconst"]]->actors[i] == 102)
+//                    {
+//                        //kevin bacon found yay
+//                        return;
+//                    }
+//                    else
+//                        std::cout<<'n';
+//                        //mark movie visited queue those actors
+//                }
+//            }
 
         }
     }
