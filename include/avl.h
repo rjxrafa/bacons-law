@@ -124,7 +124,7 @@ avl::BinaryTree<T>& avl::BinaryTree<T>::operator=(const BinaryTree<T> &other) {
     ClearTree(root_);
     CopyTree(other.root());
   }
-  return this;
+  return *this;
 }
 
 /**

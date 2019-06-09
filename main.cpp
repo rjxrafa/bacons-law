@@ -22,6 +22,15 @@ int main() {
   movies.Insert(2222, "Asian College Cuties");
   movies.Insert(2222, "Asian College Cuties");
 
+  cs008::Map<int, std::string> test;
+  test.Insert(123, "Test movie");
+
+  movies = test;
+
+  std::cout << movies << std::endl;
+
+  movies.Remove(9);
+
   std::cout << movies << std::endl;
 
   std::cout << movies[2222];

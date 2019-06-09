@@ -15,8 +15,7 @@
 #include <algorithm>
 #include <sstream>
 #include "actorcrew.h"
-#include "avl.h"
-#include "node.h"
+#include "map.h"
 
 bool GetInput(std::string &input, std::string &&question);
 

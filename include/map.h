@@ -9,6 +9,11 @@
 
 namespace cs008{
 
+/**
+ * This map implementation uses the
+ * @tparam Key
+ * @tparam Value
+ */
 template <typename Key, typename Value>
 class Map {
 
@@ -54,10 +59,10 @@ class Map {
   Map() = default;
   ~Map() = default;
   Map(const Map& other);
-  Map& operator=(const Map &other);
+  Map& operator=(const Map<Key,Value> &other);
 
-  void Insert(const Key &key, const Value &value);
-  bool Remove(const Key &key);
+  void Insert(const Key &&key, const Value &&value);
+  bool Remove(const Key &&key);
 
   Value& operator[](const Key& key);
 
@@ -70,25 +75,24 @@ class Map {
 
  private:
   avl::BinaryTree<Pair> map_;
-  void copy(Map &other);
+  void copy(const Map<Key,Value> &other);
 
 };
 
 template<typename Key, typename Value>
-Map<Key, Value>::Map(const Map &other) {
+Map<Key,Value>::Map(const Map<Key,Value> &other) {
+  copy(other);
+}
+
+template<typename Key, typename Value>
+Map<Key,Value> &Map<Key, Value>::operator=(const Map<Key,Value> &other) {
   if (this != &other)
     copy(other);
   return *this;
 }
 
 template<typename Key, typename Value>
-Map<Key,Value> &Map<Key, Value>::operator=(const Map &other) {
-  copy(other);
-  return this;
-}
-
-template<typename Key, typename Value>
-void Map<Key, Value>::Insert(const Key &key, const Value &value) {
+void Map<Key,Value>::Insert(const Key &&key, const Value &&value) {
   Pair temp;
 
   temp.key_ = key;
@@ -98,7 +102,7 @@ void Map<Key, Value>::Insert(const Key &key, const Value &value) {
 }
 
 template<typename Key, typename Value>
-bool Map<Key, Value>::Remove(const Key &key) {
+bool Map<Key,Value>::Remove(const Key &&key) {
   Pair temp;
   temp.key_ = key;
 
@@ -106,7 +110,7 @@ bool Map<Key, Value>::Remove(const Key &key) {
 }
 
 template<typename Key, typename Value>
-Value& Map<Key, Value>::operator[](const Key &key) {
+Value& Map<Key,Value>::operator[](const Key &key) {
 
   Pair temp;
   temp.key_ = key;
@@ -115,8 +119,9 @@ Value& Map<Key, Value>::operator[](const Key &key) {
 }
 
 template<typename Key, typename Value>
-void Map<Key, Value>::copy(Map &other) {
-//todo
+void Map<Key,Value>::copy(const Map<Key,Value> &other) {
+//  map_ = other.map_;
+//  todo: does not work properly
 }
 
 }
