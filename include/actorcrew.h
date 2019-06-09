@@ -5,22 +5,23 @@
 
 struct Actor
 {
-    Actor(int id = 0, int bacon = 1){
-        baconNumber = bacon;
+    Actor(int id = 0){
         actorID = id;
         visited = false;
+        parent = nullptr;
     }
     ~Actor(){
-        baconNumber = 0;
         actorID = 0;
         movies.clear();
         famousMovies.clear();
         visited = false;
+        parent = nullptr;
     }
-    int actorID, baconNumber;
+    int actorID;
     std::vector<int> movies;
     std::vector<int> famousMovies;
     bool visited;
+    Actor* parent;
 };
 
 struct Crew

@@ -462,6 +462,7 @@ istream& operator>>(istream &in, node<D> &theNode)
 {
   cout<<"Data: ";
   in>>theNode.data;
+  return in;
 }
 
 } // end namespace Q

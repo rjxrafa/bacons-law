@@ -56,18 +56,20 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
 //  std::queue<std::string>
 //nm0000102    Kevin Bacon    1958 nm0000102 is 102 in int
     cs8::Queue<int> sixDegrees;
-    int actor;
+    int origin, actor, index;
 
+    //Resetting flags
     for(unsigned int i = 0; i < actorMovies_.size(); ++i)
     {
         actorMovies_[i]->visited = false;
-        actorMovies_[i]->baconNumber = 1;
+        actorMovies_[i]->parent = nullptr;
     }
     for(unsigned int i = 0; i < movieCrew_.size(); ++i)
     {
         movieCrew_[i]->visited = false;
     }
-    //TODO:
+
+
     //name to nconst
     //nconst to fakeptr
     if(!actor_to_id_.count(actorName))
@@ -77,86 +79,101 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
     }
 
     if(actor_to_id_.at(actorName).size() == 1)
+    {
         sixDegrees.enqueue(actorMovies_[actorIndex_[actor_to_id_[actorName][0]]]->actorID);
+        origin = actorMovies_[actorIndex_[actor_to_id_[actorName][0]]]->actorID;
+    }
     else
     {
-        std::cout<<"Which actor \n";
-        for(size_t i = 0; i < actor_to_id_[actorName].size(); ++i)
+        std::cout<<"Duplicate actors, which actor?\n";
+        for(size_t i = 0; i < actor_to_id_.at(actorName).size(); ++i)
         {
-            for(size_t j = 0; j < actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies.size(); ++j)
-                std::cout<<i<<':'<<movies_[actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]]<<' ';
+            std::cout<<i<<':';
+            if(actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies.size() != 0)
+            {
+                for(size_t j = 0; j < actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies.size(); ++j)
+                {
+                    if(j == actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies.size() - 1)
+                    {
+                        if(movies_.count(actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]))
+                            std::cout<<movies_[actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]];
+                        else
+                            std::cout<<"Movie not found or not in US";
+                    }
+                    else
+                        if(movies_.count(actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]))
+                            std::cout<<movies_[actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]]<<','<<' ';
+                        else
+                            std::cout<<"Movie not found or not in US"<<','<<' ';
+                }
+            }
+            else
+                std::cout<<"No movies";
+
             std::cout<<'\n';
         }
-        std::cin >> actor;
-        actor = actor_to_id_[actorName][actor];
+        std::cin >> index;
+        std::cin.ignore(256, '\n');
+        actor = actor_to_id_[actorName][index];
+        origin = actor;
         sixDegrees.enqueue(actor);
     }
 
+    int movieIndex, actorIndex, baconNumber = 0;
 
     while(!sixDegrees.empty())
     {
-        sixDegrees >> actor;
-
-        if(actorMovies_[actorIndex_[actor]]->visited == false)
+        actor = sixDegrees.dequeue();
+        //if the person has not been visited
+        if(actorMovies_[actorIndex_[actor]]->visited == false) //actorMovies_[actorIndex_[actor]] actor is the id that is put in actorIndex_ to get a index to get the information of an actor in actorMovies_ vector
         {
+            //set to being visited
             actorMovies_[actorIndex_[actor]]->visited = true;
-
+            //Go thru their movies
             for(int i = 0; i < actorMovies_[actorIndex_[actor]]->movies.size(); ++i)
             {
-                if(movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->visited == false)
+                movieIndex = movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]];
+                //actorMovies_[actorIndex_[actor]]->movies[i]] returns a tconst that you put in movie index
+                if(movieCrew_[movieIndex]->visited == false)
                 {
-                    movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->visited = true;
-                    for(int j = 0; j < movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->actors.size(); ++j)
-                    {
-                        //102 is kevin bacons number
-                        if(movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->actors[j] == 102)
-                        {
+                    //set movie to being visited true so reprocessing does have to be done
+                    movieCrew_[movieIndex]->visited = true;
 
-                            std::cout<<"Bacon number is "<<actorMovies_[actorIndex_[movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->actors[j]]]->baconNumber<<'\n';
+                    //check the actors in the movie
+                    for(int j = 0; j < movieCrew_[movieIndex]->actors.size(); ++j)
+                    {
+
+                        actorIndex = actorIndex_[movieCrew_[movieIndex]->actors[j]];
+                        //102 is kevin bacons number
+                        if(movieCrew_[movieIndex]->actors[j] == 102)
+                        {
+                            if(actorMovies_[actorIndex] != actorMovies_[actorIndex_[actor]])
+                                actorMovies_[actorIndex_[102]]->parent = actorMovies_[actorIndex_[actor]];
+                            Actor *temp = actorMovies_[actorIndex_[102]];
+                            std::cout<<temp->actorID<<" <- ";
+                            for(temp = temp->parent ; temp != nullptr; temp = temp->parent)
+                            {
+                                if(temp->parent == nullptr)
+                                    std::cout<<temp->actorID;
+                                else
+                                    std::cout<<temp->actorID<<" <- ";
+                                ++baconNumber;
+                            }
+                            std::cout<<'\n';
+                            std::cout<<actorName<<"'s Bacon number is "<<baconNumber<<'\n';
+                            //return the origins bacon number
                             return;
                         }
                         else
                         {
-                            //how to increase bacon number??
-                            actorMovies_[actorIndex_[movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->actors[j]]]->baconNumber += 1;
-                            sixDegrees.enqueue(movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->actors[j]);
+                            //Enqueue Actor that isnt kevin bacon
+                            if(actorMovies_[actorIndex] != actorMovies_[actorIndex_[actor]])
+                                actorMovies_[actorIndex]->parent = actorMovies_[actorIndex_[actor]];
+                            sixDegrees.enqueue(movieCrew_[movieIndex]->actors[j]);
                         }
                     }
                 }
             }
         }
     }
-//    1  procedure BFS(G,start_v):
-//    2      let Q be a queue
-//    3      label start_v as discovered
-//    4      Q.enqueue(start_v)
-//    5      while Q is not empty
-//    6          v = Q.dequeue()
-//    7          if v is the goal:
-//    8              return v
-//    9          for all edges from v to w in G.adjacentEdges(v) do
-//    10             if w is not labeled as discovered:
-//    11                 label w as discovered
-//    12                 w.parent = v
-//    13                 Q.enqueue(w)
-//   BFS pseudocode
-//    Set all nodes to "not visited";
-
-//   q = new Queue();
-
-//   q.enqueue(initial node);
-
-//   while ( q ≠ empty ) do
-//   {
-//      x = q.dequeue();
-
-//      if ( x has not been visited )
-//      {
-//         visited[x] = true;         // Visit node x !
-
-//         for ( every edge (x, y)  /* we are using all edges ! */ )
-//            if ( y has not been visited )
-//	       q.enqueue(y);       // Use the edge (x,y) !!!
-//      }
-//   }
 }
