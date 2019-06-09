@@ -2,6 +2,7 @@
  * This is a map implementation using the AVL tree as the base tree.
  * @author  Rafael Betita
  * @modified 2019-06-08
+ * @namespace cs8
  */
 
 #ifndef BACONS_LAW_INCLUDE_MAP_H_
@@ -9,7 +10,7 @@
 
 #include "avl.h"
 
-namespace cs008{
+namespace cs8{
 
 /**
  * This map implementation uses the
@@ -123,8 +124,7 @@ Value& Map<Key,Value>::operator[](const Key &key) {
 
 template<typename Key, typename Value>
 void Map<Key,Value>::copy(const Map<Key,Value> &other) {
-//  map_ = other.map_;
-//  todo: does not work properly
+  map_ = other.map_;
 }
 
 template<typename Key, typename Value>
@@ -136,6 +136,6 @@ int Map<Key, Value>::Count(const Key &key) {
   return map_.count(temp);
 }
 
-}
+} //end cs8 namespace
 
 #endif //BACONS_LAW_INCLUDE_MAP_H_

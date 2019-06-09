@@ -2,6 +2,7 @@
  * This is a multimap implementation using the AVL tree as the base tree.
  * @author  Rafael Betita
  * @modified 2019-06-08
+ * @namespace cs8
  */
 
 #ifndef BACONS_LAW_INCLUDE_MULTIMAP_H_
@@ -9,7 +10,7 @@
 
 #include "mylib.h"
 
-namespace cs008 {
+namespace cs8 {
 template <typename Key, typename Value>
 class Multimap {
 
@@ -39,7 +40,6 @@ class Multimap {
       } else {
         values_.push_back(other.values_[0]);
       }
-
       return *this;
     }
 
@@ -120,9 +120,9 @@ Value &Multimap<Key, Value>::operator[](const Key &key) {
 
 template<typename Key, typename Value>
 void Multimap<Key, Value>::copy(const Multimap<Key, Value> &other) {
-//  map_ = other.map_;
-//  todo
+  map_ = other.map_;
 }
+
 template<typename Key, typename Value>
 int Multimap<Key, Value>::Count(const Key &key) {
   MultiPair temp;

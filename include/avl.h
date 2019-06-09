@@ -65,7 +65,7 @@ class BinaryTree
   void SetBalance(Node<T> *&root, int &&balance);
 
   void ClearTree(Node<T>*& root);
-  void CopyTree(const Node<T>& root);
+  void CopyTree(const Node<T> *&&root);
   void DeleteRightChild(Node<T>* &child, Node<T>* &parent);
   Node<T> DeleteLeftChild(Node<T>* &child, Node<T>* &parent);
 
@@ -147,14 +147,14 @@ avl::BinaryTree<T>& avl::BinaryTree<T>::operator<<(const T & data) {
  * @note This implementation assumes that the caller is already empty
  */
 template <typename T>
-void avl::BinaryTree<T>::CopyTree(const Node<T>& root) {
+void avl::BinaryTree<T>::CopyTree(const Node<T>*&&root) {
 
   if (root == nullptr)
     return;
 
-  Insert(root.data);
-  CopyTree(root.left);
-  CopyTree(root.right);
+  Insert(root->data);
+  CopyTree(root->left);
+  CopyTree(root->right);
 }
 
 /**
