@@ -1,5 +1,7 @@
 /**
  * This is a map implementation using the AVL tree as the base tree.
+ * @author  Rafael Betita
+ * @modified 2019-06-08
  */
 
 #ifndef BACONS_LAW_INCLUDE_MAP_H_
@@ -74,10 +76,8 @@ class Map {
     return out;
   }
 
- protected:
-  avl::BinaryTree<Pair> map_;
-
  private:
+  avl::BinaryTree<Pair> map_;
   void copy(const Map<Key,Value> &other);
 
 };

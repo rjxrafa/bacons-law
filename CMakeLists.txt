@@ -6,8 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(SOURCE  src/parser.cpp
             src/mylib.cpp
             src/graph.cpp
-            src/menu.cpp
-        )
+            src/menu.cpp)
 
 set(INCLUDE include/parser.h
             include/mylib.h
