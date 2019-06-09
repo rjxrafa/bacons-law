@@ -8,12 +8,11 @@
  * Keith Wood's efficient AVL implementation @ bitlush.com.
  *
  * @author      Rafael Betita
- * @modified    2019-06-05
+ * @modified    2019-06-08
  * @namespace   avl
  ****/
 
 #include "node.h"
-//#include "mylib.h"
 
 namespace avl {
 
@@ -35,8 +34,8 @@ class BinaryTree
   BinaryTree<T>& operator<<(const T & data); // Insert operation
   Node<T> ExtractSmallest(); // Extraction operation (smallest first) / no rebalance
   bool Delete(const T &data, const unsigned int &count = 1); // todo: deletion w/rebalance
-  void Insert(const T &value, const size_t &p = 0, const size_t &l = 0); // AVL-Insert w/ rebalance
-  T& operator[](T &&key);
+  void Insert(const T &value); // AVL-Insert w/ rebalance
+  T& operator[](T &key);
 
   /** Constant members **/
   bool empty() const {return !root_;}
@@ -152,7 +151,7 @@ void avl::BinaryTree<T>::CopyTree(const Node<T>& root) {
   if (root == nullptr)
     return;
 
-  Insert(root.data, root.count);
+  Insert(root.data);
   CopyTree(root.left);
   CopyTree(root.right);
 }
@@ -307,7 +306,7 @@ template <typename S>
 std::istream& operator>>(std::istream& in, avl::BinaryTree<S> &other) {
   avl::Node<S> temp;
   while (in >> temp) {
-    other.Insert(temp.data, temp.count);
+    other.Insert(temp.data);
   }
   return in;
 }
@@ -630,12 +629,10 @@ avl::Node<T> avl::BinaryTree<T>::ExtractSmallest() {
  *
  * @tparam T
  * @param value
- * @param p
- * @param l
- * @modified 2019-05-25
+ * @modified 2019-06-08
  */
 template <typename T>
-void avl::BinaryTree<T>::Insert(const T &value, const size_t &p, const size_t &l) {
+void avl::BinaryTree<T>::Insert(const T &value) {
   if (root_ == nullptr)
   { // todo add node stack implementation
     root_ = new Node<T>(value, 1, nullptr);
@@ -644,6 +641,7 @@ void avl::BinaryTree<T>::Insert(const T &value, const size_t &p, const size_t &l
 
     while (temp != nullptr) {
       if (temp->data == value) {
+        temp->data = value; // This will trigger an overloaded assignment operator
         ++temp->count;
         return;
       }
@@ -681,7 +679,7 @@ void avl::BinaryTree<T>::Insert(const T &value, const size_t &p, const size_t &l
  * @todo Get rid of extraneous variables in Find
  */
 template<typename T>
-T& BinaryTree<T>::operator[](T &&key) {
+T& BinaryTree<T>::operator[](T &key) {
   Node<T> *parent = nullptr;
   Node<T> *find = nullptr;
   bool less_than; //todo get rid of?
