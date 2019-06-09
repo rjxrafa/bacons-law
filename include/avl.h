@@ -38,6 +38,7 @@ class BinaryTree
   T& operator[](T &key);
 
   /** Constant members **/
+  int count(T &data) const;
   bool empty() const {return !root_;}
   int height() const {return height(root_);}
   const Node<T>* root() const {return root_;}
@@ -691,6 +692,15 @@ T& BinaryTree<T>::operator[](T &key) {
 //  }
 
   return (find->data);
+}
+
+template<typename T>
+int BinaryTree<T>::count(T &data) const {
+  bool less = false;
+  Node<T> *parent_ptr = nullptr,
+          *ptr = Find(data,root_, parent_ptr, less);
+
+  return (ptr) ? (ptr->count) : 0;
 }
 
 } // end namespace avl

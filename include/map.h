@@ -61,8 +61,9 @@ class Map {
   Map(const Map& other);
   Map& operator=(const Map<Key,Value> &other);
 
-  void Insert(const Key &&key, const Value &&value);
+  void Insert(const Key &key, const Value &value);
   bool Remove(const Key &&key);
+  int Count(const Key &key);
 
   Value& operator[](const Key& key);
 
@@ -73,8 +74,10 @@ class Map {
     return out;
   }
 
- private:
+ protected:
   avl::BinaryTree<Pair> map_;
+
+ private:
   void copy(const Map<Key,Value> &other);
 
 };
@@ -92,7 +95,7 @@ Map<Key,Value> &Map<Key, Value>::operator=(const Map<Key,Value> &other) {
 }
 
 template<typename Key, typename Value>
-void Map<Key,Value>::Insert(const Key &&key, const Value &&value) {
+void Map<Key,Value>::Insert(const Key &key, const Value &value) {
   Pair temp;
 
   temp.key_ = key;
@@ -122,6 +125,15 @@ template<typename Key, typename Value>
 void Map<Key,Value>::copy(const Map<Key,Value> &other) {
 //  map_ = other.map_;
 //  todo: does not work properly
+}
+
+template<typename Key, typename Value>
+int Map<Key, Value>::Count(const Key &key) {
+
+  Pair temp;
+  temp.key_ = key;
+
+  return map_.count(temp);
 }
 
 }

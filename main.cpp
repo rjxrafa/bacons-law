@@ -34,6 +34,12 @@ int main() {
   std::cout << movies << std::endl;
 
   std::cout << movies[2222];
+
+  avl::BinaryTree<int> asdf;
+  asdf << 5;
+
+  std::cout << movies.Count(2222);
+
 //  std::cout << a;
 
 //  std::cout << a[5] << std::endl;
