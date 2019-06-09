@@ -29,7 +29,7 @@ void Parser::PopulateActors(std::map<std::string, std::vector<int>> &actorToId, 
               titles;   // Top Movies
   int nconstInt;
 
-  if (OpenFile(FILE_OPEN::INPUT, "actors.tsv"))
+  if (OpenFile(FILE_OPEN::INPUT, "actors1.tsv"))
   {
       getline(in, temp); // skip first line
       for (int i = 0; !in.eof(); ++i) {
@@ -88,7 +88,7 @@ void Parser::PopulateCast(std::map<int, int> &actorID, std::vector<Actor*> &acto
   int nconstInt, tconstInt;
   int index = 0;
   //Casting info w/ movie id
-  if(OpenFile(Parser::FILE_OPEN::INPUT,"cast.tsv"))
+  if(OpenFile(Parser::FILE_OPEN::INPUT,"cast1.tsv"))
   {
       getline(in, temp); // skips first line
       for (int i = 0; !in.eof(); ++i) {
@@ -145,7 +145,7 @@ void Parser::PopulateTitles(std::map<int, std::string> &movie_titles) {
               lang;     // Region
 
   //  Movie title & ID
-  if(OpenFile(Parser::FILE_OPEN::INPUT,"titles.tsv"))
+  if(OpenFile(Parser::FILE_OPEN::INPUT,"titles1.tsv"))
   {
     getline(in, temp);  // Skip first line
     for (int i = 0; !in.eof(); ++i) {

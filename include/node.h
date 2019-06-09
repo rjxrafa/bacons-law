@@ -462,8 +462,8 @@ ostream& operator<<(ostream &out, const node<D> &theNode)
 template<typename D>
 istream& operator>>(istream &in, node<D> &theNode)
 {
-    cout<<"Data: ";
     in>>theNode.data;
+    return in;
 }
 }
 

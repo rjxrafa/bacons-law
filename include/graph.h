@@ -28,7 +28,7 @@ class Graph {
 //  std::vector<actor_pair> actor_;
   std::vector<Actor*> actorMovies_; // [0]=name [1]=movie tconst
   std::vector<Crew*> movieCrew_; //
-  std::map<std::string, std::vector<int>> actor_to_id_;
+  std::map<std::string, std::vector<int>> actor_to_id_; //Actor Name -> Actor ID(if duplicate will pushback other ids with same name)
   std::map<int, int> movieIndex_; // Movie ID -> Index
   std::map<int, int> actorIndex_; // Actor ID -> Index
   std::map<int, std::string> movies_; // Movie ID -> Movie Title
