@@ -9,6 +9,7 @@
 #include "parser.h"
 #include "actorcrew.h"
 #include "myqueue.h"
+#include "avl.h"
 
 class Graph {
 
@@ -24,6 +25,7 @@ class Graph {
   void BreadthFirstSearch(std::string &actorName);
 
  private:
+//  avl::BinaryTree<int> actors_;
   Parser parser_;
 //  std::vector<actor_pair> actor_;
   std::vector<Actor*> actorMovies_; // [0]=name [1]=movie tconst

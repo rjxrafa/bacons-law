@@ -19,91 +19,96 @@ namespace avl {
 enum class BST_TRAVERSAL{PRE_ORDER, IN_ORDER, POST_ORDER, BACKWARD_IN_ORDER};
 enum class BST_ERRORS{EMPTY};
 
-template <typename Key, typename Value>
+template <typename T>
 class BinaryTree
 {
  public:
   BinaryTree() : root_(nullptr),
                  traversal_(BST_TRAVERSAL::BACKWARD_IN_ORDER){}
-  BinaryTree(const Key &key, const Value &val);
+  BinaryTree(const T &data, const unsigned int &count);
   ~BinaryTree();
-  BinaryTree(const BinaryTree<Key,Value> &other);
-  BinaryTree<Key,Value> &operator=(const BinaryTree<Key,Value> &other);
+  BinaryTree(const BinaryTree<T> &other);
+  BinaryTree<T> &operator=(const BinaryTree<T> &other);
 
   /** Primary AVL tree functions **/
-  Node<Key,Value> ExtractSmallest(); // Extraction operation (smallest first) / no rebalance
-  bool Delete(const Key &key); // todo: deletion w/rebalance
-  void Insert(const Key &key, const Value &val); // AVL-Insert w/ rebalance
-  Value& operator[](Key &&key);
+  BinaryTree<T>& operator<<(const T & data); // Insert operation
+  Node<T> ExtractSmallest(); // Extraction operation (smallest first) / no rebalance
+  bool Delete(const T &data, const unsigned int &count = 1); // todo: deletion w/rebalance
+  void Insert(const T &value); // AVL-Insert w/ rebalance
+  T& operator[](T &key);
 
   /** Constant members **/
   bool empty() const {return !root_;}
   int height() const {return height(root_);}
-  const Node<Key,Value>* root() const {return root_;}
+  const Node<T>* root() const {return root_;}
 
   /** Friend functions **/
-  template <typename S, typename T>
+  template <typename S>
   friend
-  std::ostream& operator<<(std::ostream& out, const BinaryTree<S,T> &other);
+  std::ostream& operator<<(std::ostream& out, const BinaryTree<S> &other);
 
-  template <typename S, typename T>
+  template <typename S>
   friend
-  std::istream& operator>>(std::istream& in, BinaryTree<S,T> &other);
+  std::istream& operator>>(std::istream& in, BinaryTree<S> &other);
 
  private:
   /** Private members **/
-  Node<Key,Value> *root_;
+  Node<T> *root_;
   BST_TRAVERSAL traversal_;
 
   /** Rotations **/
-  Node<Key,Value>* RotateLeft(Node<Key,Value> *root);
-  Node<Key,Value>* RotateRight(Node<Key,Value> *root);
-  Node<Key,Value>* RotateLeftRight(Node<Key,Value> *root);
-  Node<Key,Value>* RotateRightLeft(Node<Key,Value> *root);
-  void SetBalance(Node<Key,Value> *&root, int &&balance);
+  Node<T>* RotateLeft(Node<T> *root);
+  Node<T>* RotateRight(Node<T> *root);
+  Node<T>* RotateLeftRight(Node<T> *root);
+  Node<T>* RotateRightLeft(Node<T> *root);
+  void SetBalance(Node<T> *&root, int &&balance);
 
-  void ClearTree(Node<Key,Value>*& root);
-  void CopyTree(const Node<Key,Value>& root);
-  void DeleteRightChild(Node<Key,Value>* &child, Node<Key,Value>* &parent);
-  Node<Key,Value> DeleteLeftChild(Node<Key,Value>* &child, Node<Key,Value>* &parent);
+  void ClearTree(Node<T>*& root);
+  void CopyTree(const Node<T>& root);
+  void DeleteRightChild(Node<T>* &child, Node<T>* &parent);
+  Node<T> DeleteLeftChild(Node<T>* &child, Node<T>* &parent);
 
-  unsigned int node_count(Node<Key,Value>* root) const;
-  Node<Key,Value>* Find(const Key& key, Node<Key,Value> *root, Node<Key,Value>* &parent, bool &less_than) const;
-  Node<Key,Value>* FindSmallest(Node<Key,Value>* root) const;
-  void PrintTree(std::ostream &out, Node<Key,Value>* root, size_t &&depth = 0) const;
+  unsigned int data_count(Node<T>* root) const;
+  unsigned int node_count(Node<T>* root) const;
+  Node<T>* Find(const T& data, Node<T> *root, Node<T>* &parent, bool &less_than) const;
+  Node<T>* FindSmallest(Node<T>* root) const;
+  void PrintTree(std::ostream &out, Node<T>* root, size_t &&depth = 0) const;
 
-  
+//  todo: Unimplemented
+//  void CreateNodes();
+//  void ResizeNodeStack();
+
 };
 
 /**
  * @brief This function is called when initializing a new tree with a data and count
- * @param key - the key of the data being inserted
- * @param value - the value of the key value pair
- * @modified 2019-06-08
+ * @param data the data being inserted
+ * @param count the count of the data
+ * @modified 2019-05-18
  */
-template <typename Key, typename Value>
-avl::BinaryTree<Key,Value>::BinaryTree(const Key &key, const Value &val) {
-  root_ = new Node<Key,Value>(key, val);
+template <typename T>
+avl::BinaryTree<T>::BinaryTree(const T &data, const unsigned int &count) {
+  root_ = new Node<T>(data, count);
   traversal_ = avl::BST_TRAVERSAL::IN_ORDER;
 }
 
 /**
  * @brief This is the copy constructor for the BinaryTree class
  * @param other
- * @modified 2019-06-08
+ * @modified 2019-05-18
  */
-template <typename Key, typename Value>
-avl::BinaryTree<Key,Value>::BinaryTree(const BinaryTree<Key,Value> &other) {
+template <typename T>
+avl::BinaryTree<T>::BinaryTree(const BinaryTree<T> &other) {
   CopyTree(other.root());
   traversal_ = other.traversal();
 }
 
 /**
  * @brief This is the default destructor for the BinaryTree class
- * @modified 2019-06-08
+ * @modified 2019-05-18
  */
-template <typename Key, typename Value>
-avl::BinaryTree<Key,Value>::~BinaryTree() {
+template <typename T>
+avl::BinaryTree<T>::~BinaryTree() {
   ClearTree(root_);
 }
 
@@ -111,10 +116,10 @@ avl::BinaryTree<Key,Value>::~BinaryTree() {
  * @brief operator = This is the assignment operator for the BinaryTree class
  * @param other
  * @return the address of the newly assigned tree
- * @modified 2019-06-08
+ * @modified 2019-05-18
  */
-template <typename Key, typename Value>
-avl::BinaryTree<Key,Value>& avl::BinaryTree<Key,Value>::operator=(const BinaryTree<Key,Value> &other) {
+template <typename T>
+avl::BinaryTree<T>& avl::BinaryTree<T>::operator=(const BinaryTree<T> &other) {
   if (this != &other) {
     ClearTree(root_);
     CopyTree(other.root());
@@ -123,18 +128,30 @@ avl::BinaryTree<Key,Value>& avl::BinaryTree<Key,Value>::operator=(const BinaryTr
 }
 
 /**
+ * @brief operator << This function utilizes the Insert functionality of the BinaryTree class
+ * @param data
+ * @return
+ * @modified 2019-05-18
+ */
+template <typename T>
+avl::BinaryTree<T>& avl::BinaryTree<T>::operator<<(const T & data) {
+  Insert(data);
+  return *this;
+}
+
+/**
  * @brief This function will copy a given tree from its root node
  * @param root
- * @modified 2019-06-08
+ * @modified 2019-05-18
  * @note This implementation assumes that the caller is already empty
  */
-template <typename Key, typename Value>
-void avl::BinaryTree<Key,Value>::CopyTree(const Node<Key,Value>& root) {
+template <typename T>
+void avl::BinaryTree<T>::CopyTree(const Node<T>& root) {
 
   if (root == nullptr)
     return;
 
-  Insert(root.key_, root.count);
+  Insert(root.data);
   CopyTree(root.left);
   CopyTree(root.right);
 }
@@ -145,8 +162,8 @@ void avl::BinaryTree<Key,Value>::CopyTree(const Node<Key,Value>& root) {
  *
  * @modified    2019-05-18
  **/
-template <typename Key, typename Value>
-void avl::BinaryTree<Key,Value>::ClearTree(Node<Key,Value>*& root) {
+template <typename T>
+void avl::BinaryTree<T>::ClearTree(Node<T>*& root) {
   if (root == nullptr)
     return;
 
@@ -157,13 +174,27 @@ void avl::BinaryTree<Key,Value>::ClearTree(Node<Key,Value>*& root) {
 }
 
 /**
+ * @brief data_count This function will return a total data count for a given root node and its children
+ * @param root
+ * @return
+ * @modified 2019-05-18
+ */
+template <typename T>
+unsigned int avl::BinaryTree<T>::data_count(Node<T>* root) const {
+  if (root == nullptr)
+    return 0;
+  else
+    return (root->count + data_count(root->left) + data_count(root->right));
+}
+
+/**
  * @brief node_count This function will return a total node count for a given root node and its children
  * @param root
  * @return
- * @modified 2019-06-08
+ * @modified 2019-05-18
  */
-template <typename Key, typename Value>
-unsigned int avl::BinaryTree<Key,Value>::node_count(Node<Key,Value>* root) const {
+template <typename T>
+unsigned int avl::BinaryTree<T>::node_count(Node<T>* root) const {
   if (root == nullptr)
     return 0;
   else
@@ -176,12 +207,12 @@ unsigned int avl::BinaryTree<Key,Value>::node_count(Node<Key,Value>* root) const
  * @param method
  * @modified 2019-05-25
  */
-template <typename Key, typename Value>
-void avl::BinaryTree<Key,Value>::PrintTree(std::ostream &out, Node<Key,Value>* root, size_t &&depth) const {
+template <typename T>
+void avl::BinaryTree<T>::PrintTree(std::ostream &out, Node<T>* root, size_t &&depth) const {
 
   if (root) {
     if (traversal_ == avl::BST_TRAVERSAL::PRE_ORDER)
-      out << std::setw(4*depth) << "" <<  root->key_ << ':' << root->value_ << '\n';
+      out << std::setw(4*depth) << "" <<  root->data << '[' << root->count << ']' << '\n';
 
     if (traversal_ == avl::BST_TRAVERSAL::BACKWARD_IN_ORDER)
       PrintTree(out, root->right, depth+1);
@@ -189,7 +220,7 @@ void avl::BinaryTree<Key,Value>::PrintTree(std::ostream &out, Node<Key,Value>* r
       PrintTree(out, root->left, depth+1);
 
     if (traversal_ == avl::BST_TRAVERSAL::IN_ORDER || traversal_ == avl::BST_TRAVERSAL::BACKWARD_IN_ORDER)
-      out << std::setw(4*depth) << "" << root->key_ << ':' << root->value_ << '\n';
+      out << std::setw(4*depth) << "" << root->data << '[' << root->count << ']' << '\n';
 
 
     if (traversal_ == avl::BST_TRAVERSAL::BACKWARD_IN_ORDER)
@@ -198,34 +229,35 @@ void avl::BinaryTree<Key,Value>::PrintTree(std::ostream &out, Node<Key,Value>* r
       PrintTree(out, root->left, depth+1);
 
     if (traversal_ == avl::BST_TRAVERSAL::POST_ORDER)
-      out << std::setw(4*depth) << ""  << root->key_ << ':' << root->value_ << '\n';
+      out << std::setw(4*depth) << ""  <<root->data << '[' << root->count << ']' << '\n';
   }
 
 }
 
 /**
- * @brief Delete This function deletes a given key from the tree. Adapted from
+ * @brief Delete This function deletes N count occurences from the Binary Tree and adapted from
  * Paul Wilkinson's CS008 lectures.
  *
  * @param data
  * @param count
- * @modified 2019-06-08
+ * @modified 2019-05-18
  */
-template <typename Key, typename Value>
-bool avl::BinaryTree<Key,Value>::Delete(const Key &key) {
-  // todo implement rebalancing
+template <typename T>
+bool avl::BinaryTree<T>::Delete(const T &data, const unsigned int &count) {
   bool less_than;
-  Node<Key,Value> *parent = nullptr,
-      *child = Find(key, root_, parent, less_than);
+  Node<T> *parent = nullptr,
+      *child = Find(data, root_, parent, less_than);
 
   if (child) { // if an item was found..
-    if (less_than)
-      DeleteLeftChild(child, parent);
-    else
-      DeleteRightChild(child, parent);
+    if ((child->count -= count) < 1) {
+      if (less_than)
+        DeleteLeftChild(child, parent);
+      else
+        DeleteRightChild(child, parent);
+    }
     return true;
   } else {
-    std::cout << "Key not found";
+    std::cout << "No item to delete";
     return false;
   }
 }
@@ -242,23 +274,21 @@ bool avl::BinaryTree<Key,Value>::Delete(const Key &key) {
  * @param less_than
  * @return
  */
-template <typename Key, typename Value>
-avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::Find(const Key& key,
-                                                       Node<Key,Value> *root,
-                                                       Node<Key,Value>* &parent,
-                                                       bool &less_than) const {
+template <typename T>
+avl::Node<T>* avl::BinaryTree<T>::Find(const T& data, Node<T> *root, Node<T>* &parent, bool &less_than) const {
+
   parent = root;
   less_than = true;
   bool cont = true;
 
   while (root && cont) {
-    if(key == root->key_) {
+    if(data == root->data) {
       less_than = (root == parent->left);
       cont = false;
-    } else if (key < root->key_) {
+    } else if (data < root->data) {
       parent = root;
       root = root->left;
-    } else if (key > root->key_) {
+    } else if (data > root->data) {
       parent = root;
       root = root->right;
     }
@@ -266,17 +296,17 @@ avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::Find(const Key& key,
   return root; // returns null if not found
 }
 
-template <typename S, typename T>
-std::ostream& operator<<(std::ostream& out, const avl::BinaryTree<S,T> &other) {
+template <typename S>
+std::ostream& operator<<(std::ostream& out, const avl::BinaryTree<S> &other) {
   other.PrintTree(out, other.root_);
   return out;
 }
 
-template <typename S, typename T>
-std::istream& operator>>(std::istream& in, avl::BinaryTree<S,T> &other) {
-  avl::Node<S,T> temp;
+template <typename S>
+std::istream& operator>>(std::istream& in, avl::BinaryTree<S> &other) {
+  avl::Node<S> temp;
   while (in >> temp) {
-    other.Insert(temp.key_, temp.value_);
+    other.Insert(temp.data);
   }
   return in;
 }
@@ -285,10 +315,10 @@ std::istream& operator>>(std::istream& in, avl::BinaryTree<S,T> &other) {
  * @brief FindSmallest This will return the smallest node for a given root
  * @param root
  * @return
- * @modified 2019-06-08
+ * @modified 2019-05-18
  */
-template <typename Key, typename Value>
-avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::FindSmallest(Node<Key,Value>* root) const {
+template <typename T>
+avl::Node<T>* avl::BinaryTree<T>::FindSmallest(Node<T>* root) const {
   for ( ; root->left != nullptr; root = root->left);
   return root;
 }
@@ -297,18 +327,17 @@ avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::FindSmallest(Node<Key,Value>* 
  * @brief This function has been adapted from Paul Wilkinson's CS008 lectures.
  * @param child
  * @param parent
- * @modified 2019-06-08
+ * @modified 2019-05-18
  */
-template <typename Key, typename Value>
-avl::Node<Key,Value> avl::BinaryTree<Key,Value>::DeleteLeftChild(Node<Key,Value>* &child,
-                                                                 Node<Key,Value>* &parent) {
+template <typename T>
+avl::Node<T> avl::BinaryTree<T>::DeleteLeftChild(Node<T>* &child, Node<T>* &parent) {
   if (child->right) {  // if the child to be deleted has a right child, we need to relink it
     parent->left = child->right;
     FindSmallest(child->right)->left = child->left;
   } else  // if child has no right child, then we proceed to replace the node to be deleted with its left child
     parent->left = child->left;
 
-  Node<Key,Value> temp = *child; // this will give a copy of child
+  Node<T> temp = *child; // this will give a copy of child
   delete child;
   return temp;
 }
@@ -317,10 +346,10 @@ avl::Node<Key,Value> avl::BinaryTree<Key,Value>::DeleteLeftChild(Node<Key,Value>
  * @brief This function has been adapted from Paul Wilkinson's CS008 lectures.
  * @param child
  * @param parent
- * @modified 2019-06-08
+ * @modified 2019-05-18
  */
-template <typename Key, typename Value>
-void avl::BinaryTree<Key,Value>::DeleteRightChild(Node<Key,Value>* &child, Node<Key,Value>* &parent) {
+template <typename T>
+void avl::BinaryTree<T>::DeleteRightChild(Node<T>* &child, Node<T>* &parent) {
   if (parent == root_) { // special case: when deleting the root's right child
     if (root_->right) {
       root_ = root_->right;
@@ -345,7 +374,7 @@ void avl::BinaryTree<Key,Value>::DeleteRightChild(Node<Key,Value>* &child, Node<
  * @brief This function rotates a given node and its right child (and any subtrees)
  * @param root
  * @return
- * @modified 2019-06-08
+ * @modified 2019-05-19
  */
 
 /** Example, where x is the root
@@ -356,11 +385,11 @@ void avl::BinaryTree<Key,Value>::DeleteRightChild(Node<Key,Value>* &child, Node<
  *        B   C       A   B
  *
  */
-template <typename Key, typename Value>
-avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::RotateLeft(Node<Key,Value> *root) { // RR case
-  Node<Key,Value> *right = root->right;
-  Node<Key,Value> *rightLeft = right->left;
-  Node<Key,Value> *parent = root->parent;
+template <typename T>
+avl::Node<T>* avl::BinaryTree<T>::RotateLeft(Node<T> *root) { // RR case
+  Node<T> *right = root->right;
+  Node<T> *rightLeft = right->left;
+  Node<T> *parent = root->parent;
 
   right->parent = parent;
   right->left = root;
@@ -387,7 +416,7 @@ avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::RotateLeft(Node<Key,Value> *ro
  * @brief This function rotates a given node and its left child (and any subtrees)
  * @param root
  * @return
- * @modified 2019-06-08
+ * @modified 2019-05-19
  */
 
 /** Where X is the root
@@ -398,12 +427,12 @@ avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::RotateLeft(Node<Key,Value> *ro
  *   A  B                  B  C
  */
 
-template <typename Key, typename Value>
-avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::RotateRight(Node<Key,Value> *root) { // LL case
+template <typename T>
+avl::Node<T>* avl::BinaryTree<T>::RotateRight(Node<T> *root) { // LL case
 
-  Node<Key,Value> *left = root->left;
-  Node<Key,Value> *leftRight = left->right;
-  Node<Key,Value> *parent = root->parent;
+  Node<T> *left = root->left;
+  Node<T> *leftRight = left->right;
+  Node<T> *parent = root->parent;
 
   left->parent = parent;
   left->right = root;
@@ -429,15 +458,13 @@ avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::RotateRight(Node<Key,Value> *r
 /**
  * This function is the primary rebalance function for the AVL implementation. Adapted from Mike Wood's AVL
  * C# efficient avl tree implementation
-
- * @tparam Key
- * @tparam Value
+ *
+ * @tparam T
  * @param root
  * @param balance
- * @modified 2019-06-08
  */
-template<typename Key, typename Value>
-void avl::BinaryTree<Key,Value>::SetBalance(Node<Key,Value> *&root, int &&balance) {
+template<typename T>
+void avl::BinaryTree<T>::SetBalance(Node<T> *&root, int &&balance) {
   while (root) {
     balance = root->balance += balance;
 
@@ -459,7 +486,7 @@ void avl::BinaryTree<Key,Value>::SetBalance(Node<Key,Value> *&root, int &&balanc
       return;
     }
 
-    Node<Key,Value> *parent = root->parent;
+    Node<T> *parent = root->parent;
 
     if (parent)
       balance = (parent->left == root) ? 1 : -1;
@@ -474,15 +501,15 @@ void avl::BinaryTree<Key,Value>::SetBalance(Node<Key,Value> *&root, int &&balanc
  * @brief This function rotates a given node and its children twice (RL case)
  * @param root
  * @return
- * @modified 2019-06-08
+ * @modified 2019-05-19
  */
-template <typename Key, typename Value>
-avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::RotateRightLeft(Node<Key,Value> *root) { // also known as left right case
-  Node<Key,Value> *right = root->right;
-  Node<Key,Value> *rightLeft = right->left;
-  Node<Key,Value> *parent = root-> parent;
-  Node<Key,Value> *rightLeftLeft = rightLeft->left;
-  Node<Key,Value> *rightLeftRight = rightLeft->right;
+template <typename T>
+avl::Node<T>* avl::BinaryTree<T>::RotateRightLeft(Node<T> *root) { // also known as left right case
+  Node<T> *right = root->right;
+  Node<T> *rightLeft = right->left;
+  Node<T> *parent = root-> parent;
+  Node<T> *rightLeftLeft = rightLeft->left;
+  Node<T> *rightLeftRight = rightLeft->right;
 
   rightLeft->parent = parent;
   root->right = rightLeftLeft;
@@ -525,16 +552,16 @@ avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::RotateRightLeft(Node<Key,Value
  * @brief This function rotates a given node and its children twice (LR case)
  * @param root
  * @return
- * @modified 2019-06-08
+ * @modified 2019-05-19
  */
-template <typename Key, typename Value>
-avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::RotateLeftRight(Node<Key,Value> *root) { // also known as right left case
+template <typename T>
+avl::Node<T>* avl::BinaryTree<T>::RotateLeftRight(Node<T> *root) { // also known as right left case
 
-  Node<Key,Value> *left = root->left;
-  Node<Key,Value> *leftRight = left->right;
-  Node<Key,Value> *parent = root-> parent;
-  Node<Key,Value> *leftRightRight = leftRight->right;
-  Node<Key,Value> *leftRightLeft = leftRight->left;
+  Node<T> *left = root->left;
+  Node<T> *leftRight = left->right;
+  Node<T> *parent = root-> parent;
+  Node<T> *leftRightRight = leftRight->right;
+  Node<T> *leftRightLeft = leftRight->left;
 
   leftRight->parent = parent;
   root->left = leftRightRight;
@@ -573,20 +600,20 @@ avl::Node<Key,Value>* avl::BinaryTree<Key,Value>::RotateLeftRight(Node<Key,Value
   return leftRight;
 }
 
-template <typename Key, typename Value>
-avl::Node<Key,Value> avl::BinaryTree<Key,Value>::ExtractSmallest() {
+template <typename T>
+avl::Node<T> avl::BinaryTree<T>::ExtractSmallest() {
 
   if (root_ == nullptr)
     throw BST_ERRORS::EMPTY;
 
-  Node<Key,Value> *parent, *min = root_;
+  Node<T> *parent, *min = root_;
 
   // This finds the lowest element in the tree, as well as its parent
   for ( ; min->left != nullptr; min = min->left) {
     parent = min;
   };
 
-  Node <Key,Value> temp = *min;
+  Node <T> temp = *min;
   if (min == root_) {
     root_ = root_->right;
     delete min;
@@ -600,35 +627,35 @@ avl::Node<Key,Value> avl::BinaryTree<Key,Value>::ExtractSmallest() {
  * This function is the insertion function for the AVL implementation. Adapted from Mike Wood's AVL
  * C# efficient AVL tree implementation
  *
- * @tparam Key
- * @tparam Value
- * @param key
- * @param val
+ * @tparam T
+ * @param value
  * @modified 2019-06-08
  */
-template <typename Key, typename Value>
-void avl::BinaryTree<Key,Value>::Insert(const Key &key, const Value &val) {
+template <typename T>
+void avl::BinaryTree<T>::Insert(const T &value) {
   if (root_ == nullptr)
   { // todo add node stack implementation
-    root_ = new Node<Key,Value>(key, val, nullptr);
+    root_ = new Node<T>(value, 1, nullptr);
   } else {
-    Node<Key,Value> *temp = root_;
+    Node<T> *temp = root_;
 
     while (temp != nullptr) {
-      if (temp->key_ == key) {
+      if (temp->data == value) {
+        temp->data = value; // This will trigger an overloaded assignment operator
+        ++temp->count;
         return;
       }
-      else if (temp->key_ > key) {
+      else if (temp->data > value) {
         if (!temp->left) { // if left child doesn't exist, add new node
-          temp->left = new Node<Key,Value>(key, val, temp);
+          temp->left = new Node<T>(value, 1, temp);
           SetBalance(temp, 1);
           return;
         }
         else
           temp = temp->left;
-      } else if (temp->key_ < key) {
+      } else if (temp->data < value) {
         if (!temp->right) {
-          temp->right = new Node<Key,Value>(key, val, temp);
+          temp->right = new Node<T>(value, 1, temp);
           SetBalance (temp, -1);
           return;
         } else
@@ -644,27 +671,26 @@ void avl::BinaryTree<Key,Value>::Insert(const Key &key, const Value &val) {
  * This function overloads the at operator in order to access a given key's value.
  * If not found, the item is inserted and the reference to that item is returned.
  *
- * @tparam Key
- * @tparam Value
+ * @tparam T
  * @param key
  * @return
  *
  * @todo https://en.cppreference.com/w/cpp/container/map/operator_at Add move semantic functionality
  * @todo Get rid of extraneous variables in Find
  */
-template<typename Key, typename Value>
-Value& BinaryTree<Key,Value>::operator[](Key &&key) {
-  Node<Key,Value> *parent = nullptr;
-  Node<Key,Value> *find = nullptr;
+template<typename T>
+T& BinaryTree<T>::operator[](T &key) {
+  Node<T> *parent = nullptr;
+  Node<T> *find = nullptr;
   bool less_than; //todo get rid of?
   find = Find(key, root_, parent, less_than);
 
 //  if (!find) {
-//    Insert(key, valu);
+//    Insert(key);
 //    find = Find(key, root_, parent, true);
 //  }
 
-  return (find->key_);
+  return (find->data);
 }
 
 } // end namespace avl
