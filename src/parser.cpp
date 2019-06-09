@@ -52,8 +52,7 @@ void Parser::PopulateActors(std::map<std::string, std::vector<int>> &actorToId, 
           actorID.insert(int_pair(nconstInt, i));
           //rafa tree overload [] use find to return an int
           //if titles == \n
-          Actor *s = new Actor();
-          s->actorID = nconstInt;
+          Actor *s = new Actor(name,nconstInt);
           if(titles != "\\N")
           {
               if(titles.find(',') != std::string::npos)

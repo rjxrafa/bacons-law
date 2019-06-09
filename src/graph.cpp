@@ -63,6 +63,7 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
     {
         actorMovies_[i]->visited = false;
         actorMovies_[i]->parent = nullptr;
+        actorMovies_[i]->parentM = nullptr;
     }
     for(unsigned int i = 0; i < movieCrew_.size(); ++i)
     {
@@ -113,13 +114,19 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
             std::cout<<'\n';
         }
         std::cin >> index;
-        std::cin.ignore(256, '\n');
         actor = actor_to_id_[actorName][index];
         origin = actor;
         sixDegrees.enqueue(actor);
+        std::cin.ignore(256, '\n');
     }
 
     int movieIndex, actorIndex, baconNumber = 0;
+
+    if(origin == 102)
+    {
+        std::cout<<"Kevin Bacon's Bacon Number is 0.\n";
+        return;
+    }
 
     while(!sixDegrees.empty())
     {
@@ -133,6 +140,7 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
             for(int i = 0; i < actorMovies_[actorIndex_[actor]]->movies.size(); ++i)
             {
                 movieIndex = movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]];
+
                 //actorMovies_[actorIndex_[actor]]->movies[i]] returns a tconst that you put in movie index
                 if(movieCrew_[movieIndex]->visited == false)
                 {
@@ -148,27 +156,37 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
                         if(movieCrew_[movieIndex]->actors[j] == 102)
                         {
                             if(actorMovies_[actorIndex] != actorMovies_[actorIndex_[actor]])
-                                actorMovies_[actorIndex_[102]]->parent = actorMovies_[actorIndex_[actor]];
-                            Actor *temp = actorMovies_[actorIndex_[102]];
-                            std::cout<<temp->actorID<<" <- ";
-                            for(temp = temp->parent ; temp != nullptr; temp = temp->parent)
                             {
-                                if(temp->parent == nullptr)
-                                    std::cout<<temp->actorID;
+                                actorMovies_[actorIndex_[102]]->parent = actorMovies_[actorIndex_[actor]];
+                                actorMovies_[actorIndex_[102]]->parentM = movieCrew_[movieIndex];
+                            }
+
+                            Actor *actorTemp = actorMovies_[actorIndex_[102]];
+                            //Crew *movieTemp = movieCrew_[movieIndex];
+                            std::cout<<actorTemp->name<<" in "<<movies_[actorTemp->parentM->movieID] <<" with ";
+                            for(actorTemp = actorTemp->parent ; actorTemp != nullptr; actorTemp = actorTemp->parent)
+                            {
+                                if(actorTemp->parent == nullptr)
+                                    std::cout<<actorTemp->name;
                                 else
-                                    std::cout<<temp->actorID<<" <- ";
+                                {
+                                    std::cout<<actorTemp->name<<" in "<<movies_[actorTemp->parentM->movieID]<< " with ";
+                                }
                                 ++baconNumber;
                             }
                             std::cout<<'\n';
                             std::cout<<actorName<<"'s Bacon number is "<<baconNumber<<'\n';
-                            //return the origins bacon number
                             return;
                         }
                         else
                         {
                             //Enqueue Actor that isnt kevin bacon
                             if(actorMovies_[actorIndex] != actorMovies_[actorIndex_[actor]])
+                            {
                                 actorMovies_[actorIndex]->parent = actorMovies_[actorIndex_[actor]];
+                                actorMovies_[actorIndex]->parentM = movieCrew_[movieIndex];
+                            }
+
                             sixDegrees.enqueue(movieCrew_[movieIndex]->actors[j]);
                         }
                     }
@@ -176,4 +194,6 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
             }
         }
     }
+
+    std::cout<<"Chosen person is either not an actor, or does not have enough significance to be in IMDB's title principle file.\n";
 }
