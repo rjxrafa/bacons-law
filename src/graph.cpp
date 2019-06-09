@@ -61,10 +61,21 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
     for(unsigned int i = 0; i < actorMovies_.size(); ++i)
     {
         actorMovies_[i]->visited = false;
+        actorMovies_[i]->baconNumber = 1;
+    }
+    for(unsigned int i = 0; i < movieCrew_.size(); ++i)
+    {
+        movieCrew_[i]->visited = false;
     }
     //TODO:
     //name to nconst
     //nconst to fakeptr
+    if(!actor_to_id_.count(actorName))
+    {
+        std::cout<<"Actor name not found.\n";
+        return;
+    }
+
     if(actor_to_id_.at(actorName).size() == 1)
         sixDegrees.enqueue(actorMovies_[actorIndex_[actor_to_id_[actorName][0]]]->actorID);
     else
@@ -73,37 +84,46 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
         for(size_t i = 0; i < actor_to_id_[actorName].size(); ++i)
         {
             for(size_t j = 0; j < actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies.size(); ++j)
-            std::cout<<i<<':'<<movies_[actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]]<<' ';
+                std::cout<<i<<':'<<movies_[actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]]<<' ';
             std::cout<<'\n';
         }
         std::cin >> actor;
         actor = actor_to_id_[actorName][actor];
+        sixDegrees.enqueue(actor);
     }
+
 
     while(!sixDegrees.empty())
     {
         sixDegrees >> actor;
 
-        if(!actorMovies_[actorIndex_[actor]]->visited)
+        if(actorMovies_[actorIndex_[actor]]->visited == false)
         {
             actorMovies_[actorIndex_[actor]]->visited = true;
-            //search each of their movie
-//            for(unsigned int j = 0; j < actorMovies_[actorIndex_[actor]]->movies.size(); ++j)
-//            {
-//                //tconst = actorMovies_[aIndex_[nconst]]->movies[j];
-//                for(unsigned int i = 0; i < movieCrew_[movieIndex_["tconst"]]->actors.size(); ++i)
-//                {
-//                    if( movieCrew_[movieIndex_["tconst"]]->actors[i] == 102)
-//                    {
-//                        //kevin bacon found yay
-//                        return;
-//                    }
-//                    else
-//                        std::cout<<'n';
-//                        //mark movie visited queue those actors
-//                }
-//            }
 
+            for(int i = 0; i < actorMovies_[actorIndex_[actor]]->movies.size(); ++i)
+            {
+                if(movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->visited == false)
+                {
+                    movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->visited = true;
+                    for(int j = 0; j < movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->actors.size(); ++j)
+                    {
+                        //102 is kevin bacons number
+                        if(movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->actors[j] == 102)
+                        {
+
+                            std::cout<<"Bacon number is "<<actorMovies_[actorIndex_[movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->actors[j]]]->baconNumber<<'\n';
+                            return;
+                        }
+                        else
+                        {
+                            //how to increase bacon number??
+                            actorMovies_[actorIndex_[movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->actors[j]]]->baconNumber += 1;
+                            sixDegrees.enqueue(movieCrew_[movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]]]->actors[j]);
+                        }
+                    }
+                }
+            }
         }
     }
 //    1  procedure BFS(G,start_v):

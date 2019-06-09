@@ -5,17 +5,19 @@
 
 struct Actor
 {
-    Actor(int id = 0){
+    Actor(int id = 0, int bacon = 1){
+        baconNumber = bacon;
         actorID = id;
         visited = false;
     }
     ~Actor(){
+        baconNumber = 0;
         actorID = 0;
         movies.clear();
         famousMovies.clear();
         visited = false;
     }
-    int actorID;
+    int actorID, baconNumber;
     std::vector<int> movies;
     std::vector<int> famousMovies;
     bool visited;
