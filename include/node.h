@@ -5,391 +5,190 @@
  * This implementation has been adapted from Paul Wilkinson's CS008 lectures.
  *
  * @author      Rafael Betita
- * @modified    05-25-2019
- * @namespace   bst
+ * @modified    2019-06-08
+ * @namespace   avl
  ****/
 
 #ifndef Node_H
 #define Node_H
 
-//#include "mylib.h"
-#include<iostream>
-#include<fstream>
+#include "mylib.h"
 
 namespace avl{
 
-template <typename T>
+template <typename Key, typename Value>
 struct Node {
 
   /** Data **/
-  T data;
-  int count;
+  Key key_;
+  Value value_;
 
   Node* left;
   Node* right;
   Node* parent;
   int balance;
 
-  explicit Node (const T &data = T(), const unsigned int &c = 1, Node<T>* parent_ = nullptr);
+  explicit Node (const Key &k = Key(), const Value &val = Value(), Node<Key,Value>* parent_ = nullptr);
   ~Node();
-  Node(const Node<T> &other);
+  Node(const Node<Key, Value> &other);
 
-  Node<T>& operator=(const Node<T> &other);
-  Node<T>& operator^=(Node<T> &other); // Swap function
-  Node<T>& operator-=(const unsigned int &c);
-  Node<T>& operator+=(const unsigned int &c);
+  Node<Key, Value>& operator=(const Node<Key, Value> &other);
+  Node<Key, Value>& operator^=(Node<Key, Value> &other); // Swap function
 
   /** Helper functions **/
-  inline bool empty() const;
   inline void Clear(); // This function clears all values from a Node
-  inline void SetLeft(Node<T> &other);
-  inline void SetRight(Node<T> &other);
-  void Set(const T& d, const unsigned int &c);
+  inline void SetLeft(Node<Key, Value> &other);
+  inline void SetRight(Node<Key, Value> &other);
+  void Set(const Key& key, const Value &val);
   bool is_leaf() const {return (left == nullptr)&&(right == nullptr);}
-  bool operator==(T const& rhs) const { return this->data == rhs;}
 
-  /** Node-Node comparison operators **/
-  template<typename S>
+  template<typename S, typename T>
   friend
-  bool operator<(const Node<S> &x, const Node<S> &y);
+  std::ostream& operator<<(std::ostream& out, const Node<S,T> &n);
 
-  template<typename S>
+  template<typename S, typename T>
   friend
-  bool operator<=(const Node<S> &x, const Node<S> &y);
-
-  template<typename S>
-  friend
-  bool operator>(const Node<S> &x, const Node<S> &y);
-
-  template<typename S>
-  friend
-  bool operator>=(const Node<S> &x, const Node<S> &y);
-
-  // This will check for data match
-  template<typename S>
-  friend
-  bool operator==(const Node<S> &x, const Node<S> &y);
-
-  // This will check for exact match (data & count)
-  template<typename S>
-  friend
-  bool operator&=(const Node<S> &x, const Node<S> &y);
-
-  template<typename S>
-  friend
-  bool operator!=(const Node<S> &x, const Node<S> &y);
-
-  /** Data-Node comparison operators **/
-  template<typename S>
-  friend
-  bool operator<(const S &x, const Node<S> &y);
-
-  template<typename S>
-  friend
-  bool operator<=(const S &x, const Node<S> &y);
-
-  template<typename S>
-  friend
-  bool operator>(const S &x, const Node<S> &y);
-
-  template<typename S>
-  friend
-  bool operator>=(const S &x, const Node<S> &y);
-
-  template<typename S>
-  friend
-  bool operator==(const S &x, const Node<S> &y);
-
-  template<typename S>
-  friend
-  bool operator!=(const S &x, const Node<S> &y);
-
-  /** Node-Data comparison operators **/
-  template<typename S>
-  friend
-  bool operator<(const Node<S> &x, const S &y);
-
-  template<typename S>
-  friend
-  bool operator<=(const Node<S> &x, const S &y);
-
-  template<typename S>
-  friend
-  bool operator>(const Node<S> &x, const S &y);
-
-  template<typename S>
-  friend
-  bool operator>=(const Node<S> &x, const S &y);
-
-  template<typename S>
-  friend
-  bool operator==(const Node<S> &x, const S &y);
-
-  template<typename S>
-  friend
-  bool operator!=(const Node<S> &x, const S &y);
-
-  template<typename S>
-  friend
-  std::ostream& operator<<(std::ostream& out, const Node<S> &n);
-
-  template<typename S>
-  friend
-  bool operator>>(std::istream& in, Node<S> &n);
+  bool operator>>(std::istream& in, Node<S,T> &n);
 
  private:
-  void copy(const Node<T> &other);
+  void copy(const Node<Key,Value> &other);
 };
 
-
 /**
- * @brief Default constructor for the Node
- * @param d the data
- * @param c the count of the data
- */
-template<typename T>
-Node<T>::Node(const T &d, const unsigned int &c, Node<T>* parent_)
-    : data(d),
-      count(c),
+* Default constructor for the Node.
+* @tparam Key
+* @tparam Value
+* @param key
+* @param val
+* @param parent_
+*/
+template<typename Key, typename Value>
+Node<Key, Value>::Node(const Key &key, const Value &val, Node<Key,Value>* parent_)
+    : key_(key),
+      value_(val),
       balance(0),
       left(nullptr),
       right(nullptr),
       parent(parent_){}
 
 /**
- * This is the destructor for the node, which clears the data within the node and sets own children to
- * nullptr.
+ * This is the destructor for the node, which clears the data within the node
+ * and sets own children to nullptr.
  */
-template<typename T>
-Node<T>::~Node() {
-  data = T();
-  count = 0;
+template<typename Key, typename Value>
+Node<Key,Value>::~Node() {
+  key_ = Key();
+  value_ = Value();
   left = right = nullptr;
 }
 
-template<typename T>
-Node<T>::Node(const Node<T> &other) {
+/**
+ * Copy Constructor for the Node
+ * @tparam Key
+ * @tparam Value
+ * @param other
+ */
+template<typename Key, typename Value>
+Node<Key,Value>::Node(const Node<Key,Value> &other) {
   copy(other);
 }
 
-template<typename T>
-Node<T> &Node<T>::operator=(const Node<T> &other) {
+/**
+ * Assignment Operator for the Node
+ * @tparam Key
+ * @tparam Value
+ * @param other
+ * @return
+ */
+template<typename Key, typename Value>
+Node<Key,Value> &Node<Key,Value>::operator=(const Node<Key,Value> &other) {
   if (this != &other)
     copy(other);
   return *this;
 }
 
 /**
- * This function swaps the values of two Nodes (not including the child links)
- * @tparam T
- * @param other
- * @return
- */
-template<typename T>
-Node<T> &Node<T>::operator^=(Node<T> &other) {
-  T temp = data;
-  data = other.data;
-  other.data = temp;
+* This function swaps the values of two Nodes (not including the child links)
+* @tparam Key
+* @tparam Value
+* @param other
+* @return
+*/
+template<typename Key, typename Value>
+Node<Key,Value> &Node<Key,Value>::operator^=(Node<Key,Value> &other) {
+  Key temp_key = key_;
+  key_ = other.key_;
+  other.key_ = temp_key;
 
-  // XOR Swap for ints
-  other.count ^= count ^= other.count ^= count;
+  Value temp_val = value_;
+  value_ = other.value_;
+  other.value_ = temp_val;
 
   return *this;
 }
 
-template<typename T>
-Node<T> &Node<T>::operator-=(const unsigned int &c) {
-// if c is greater than current count, then set count to 0, otherwise, subtract c from count
-  count = (c>=count) ? 0 : count - c;
-  return *this;
+template<typename Key, typename Value>
+void Node<Key,Value>::Set(const Key &key, const Value &val) {
+  key_ = key;
+  value_ = val;
 }
 
-template<typename T>
-Node<T> &Node<T>::operator+=(const unsigned int &c) {
-  count += c;
-  return *this;
-}
-
-template<typename T>
-bool Node<T>::empty() const {
-  return count == 0;
-}
-
-template<typename T>
-void Node<T>::Set(const T &d, const unsigned int &c) {
-  data = d;
-  count = c;
-}
-
-template <typename T>
-void Node<T>::SetLeft(Node<T> &other) {
+template <typename Key, typename Value>
+void Node<Key,Value>::SetLeft(Node<Key,Value> &other) {
   left = other;
 }
 
-template<typename T>
-void Node<T>::SetRight(Node<T> &other) {
+template<typename Key, typename Value>
+void Node<Key,Value>::SetRight(Node<Key,Value> &other) {
   right = other;
 }
 
 /**
  * This function simply clears the data within the node, but does not delete the link to its children.
  */
-template<typename T>
-void Node<T>::Clear() {
-  data = T();
-  count = 0;
+template<typename Key, typename Value>
+void Node<Key,Value>::Clear() {
+  key_ = Key();
+  value_ = Value();
 }
 
-template<typename T>
-void Node<T>::copy(const Node<T> &other) {
-  Set(other.data, other.count);
+template<typename Key, typename Value>
+void Node<Key,Value>::copy(const Node<Key,Value> &other) {
+  Set(other.key_, other.value_);
   left = other.left;
   right = other.right;
 }
 
-/** Node-Node comparison operators **/
-
-template<typename S>
-bool operator<(const Node<S> &x, const Node<S> &y) {
-  return x.data < y.data;
-}
-
-template<typename S>
-bool operator<=(const Node<S> &x, const Node<S> &y) {
-  return x.data <= y.data;
-}
-
-template<typename S>
-bool operator>(const Node<S> &x, const Node<S> &y) {
-  return x.data > y.data;
-}
-
-template<typename S>
-bool operator>=(const Node<S> &x, const Node<S> &y) {
-  return x.data >= y.data;
-}
-
-template<typename S>
-bool operator==(const Node<S> &x, const Node<S> &y) {
-  return x.data == y.data;
-}
-
-template<typename S>
-bool operator&=(const Node<S> &x, const Node<S> &y) {
-  return (x.data == y.data) && (x.count == y.count);
-}
-
-template<typename S>
-bool operator!=(const Node<S> &x, const Node<S> &y) {
-  return x.data != y.data;
-}
-
-/** Data-Node comparison operators **/
-
-template<typename S>
-bool operator<(const S &x, const Node<S> &y) {
-  return x < y.data;
-}
-
-template<typename S>
-bool operator<=(const S &x, const Node<S> &y) {
-  return x <= y.data;
-}
-
-template<typename S>
-bool operator>(const S &x, const Node<S> &y) {
-  return x > y.data;
-}
-
-template<typename S>
-bool operator>=(const S &x, const Node<S> &y) {
-  return x >= y.data;
-}
-
-template<typename S>
-bool operator==(const S &x, const Node<S> &y) {
-  return x == y.data;
-}
-
-template<typename S>
-bool operator!=(const S &x, const Node<S> &y) {
-  return x != y.data;
-}
-
-/** Node-data comparison operators **/
-
-template<typename S>
-bool operator<(const Node<S> &x, const S &y) {
-  return x.data < y;
-}
-
-template<typename S>
-bool operator<=(const Node<S> &x, const S &y) {
-  return x.data <= y;
-}
-
-template<typename S>
-bool operator>(const Node<S> &x, const S &y) {
-  return x.data > y;
-}
-
-template<typename S>
-bool operator>=(const Node<S> &x, const S &y) {
-  return x.data >= y;
-}
-
-template<typename S>
-bool operator==(const Node<S> &x, const S &y) {
-  return x.data == y;
-}
-
-template<typename S>
-bool operator!=(const Node<S> &x, const S &y) {
-  return x.data != y;
-}
-
-template<typename S>
-std::ostream &operator<<(std::ostream &out, const Node<S> &n) {
+template<typename S, typename T>
+std::ostream &operator<<(std::ostream &out, const Node<S,T> &n) {
   if (&n != nullptr)
-    out << n.data << " (" << n.count << ')';
+    out << n.key_ << " (" << n.value_ << ')';
 
   return out;
 }
 
-template<typename S>
-bool operator>>(std::istream &in, Node<S> &n) {
-//    char junk;
+template<typename S, typename T>
+bool operator>>(std::istream &in, Node<S,T> &n) {
+// todo, implement properly
   if (&in == &std::cin) {
     std::string line;
     std::cout << "Data: ";
-    if (std::cin>>n.data) { // todo: need some data validation
+    if (std::cin>>n.data_) { // todo: need some data_ validation
       getline(in,line);
-      n.count = line.empty() ? 1 : stoi(line);
+      n.name_ = line.empty() ? "" : line;
       fflush(stdin);
       return true;
     } else
       return false;
   }
   else
-//        in >> n.data >> junk >> n.count >> junk;
-    //  std::cout << "test"; // todo
+//      in >> n.data_ >> junk >> n.count >> junk;
+//      std::cout << "test"; // todo
 
     return false;
 }
 
-} // end namespace bst
-
-/**
- * @brief   The CompareNodes struct
- * @author  Ara Mico Segismundo
- *
- * Instructions to tell a priority queue stl how to compare nodes
- */
-struct CompareNodes {
-  bool operator()(const avl::Node<std::string>& x, const avl::Node<std::string>& y) {
-    return x.count < y.count;
-  }
-};
+} // end namespace avl
 
 namespace Q {
 using namespace std;
@@ -462,8 +261,8 @@ ostream& operator<<(ostream &out, const node<D> &theNode)
 template<typename D>
 istream& operator>>(istream &in, node<D> &theNode)
 {
-    cout<<"Data: ";
     in>>theNode.data;
+    return in;
 }
 }
 
