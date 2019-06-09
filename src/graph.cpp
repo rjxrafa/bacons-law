@@ -15,7 +15,8 @@ Graph::Graph(const Graph &other) {
 
 }
 Graph &Graph::operator=(const Graph &other) {
-  //  return <#initializer#>;
+
+  return *this;
 }
 
 void Graph::GetActorName(int &nconst)

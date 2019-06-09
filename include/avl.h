@@ -236,12 +236,12 @@ void avl::BinaryTree<T>::PrintTree(std::ostream &out, Node<T>* root, size_t &&de
 }
 
 /**
- * @brief Delete This function deletes N count occurences from the Binary Tree and adapted from
- * Paul Wilkinson's CS008 lectures.
+ * @brief Delete This function deletes N count occurences from the Binary Tree.
+ * Adapted from Paul Wilkinson's CS008 lectures.
  *
  * @param data
  * @param count
- * @modified 2019-05-18
+ * @modified 2019-06-09
  */
 template <typename T>
 bool avl::BinaryTree<T>::Delete(const T &data, const unsigned int &count) {
@@ -250,6 +250,7 @@ bool avl::BinaryTree<T>::Delete(const T &data, const unsigned int &count) {
       *child = Find(data, root_, parent, less_than);
 
   if (child) { // if an item was found..
+    child->data -= data; // this triggers any overloaded -= operators
     if ((child->count -= count) < 1) {
       if (less_than)
         DeleteLeftChild(child, parent);
@@ -258,7 +259,7 @@ bool avl::BinaryTree<T>::Delete(const T &data, const unsigned int &count) {
     }
     return true;
   } else {
-    std::cout << "No item to delete";
+    printf("No such item to delete!\n");
     return false;
   }
 }

@@ -50,6 +50,11 @@ class Map {
       return *this;
     }
 
+    Pair & operator-=(const Pair &other) {
+      // Do nothing, the count should handle any deletions. An overload is necessary however.
+      return *this;
+    }
+
     friend
     std::ostream& operator <<(std::ostream &out, const Pair &other) {
       out << other.key_ << ':' << other.value_;

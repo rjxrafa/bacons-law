@@ -35,16 +35,26 @@ class Multimap {
 
     MultiPair& operator=(const MultiPair &other) {
       key_ = other.key_;
-      if (other.values_.empty()) { // Used for destructor
-        this->values_.clear();
-      } else {
-        values_.push_back(other.values_[0]);
+      for (auto &x : other.values_) {
+        values_.push_back(x);
       }
+
       return *this;
     }
 
     MultiPair& operator+=(const Value &val) {
       this->values_.push_back(val);
+      return *this;
+    }
+
+    MultiPair& operator-=(const MultiPair &other) {
+
+      for (auto i = values_.begin(); i != values_.end() ; ++i) {
+        if (other.values_[0] == *i) {
+          values_.erase(i--); // Post decrement after reducing index by 1
+        }
+      }
+      return *this;
     }
 
     friend
@@ -70,7 +80,7 @@ class Multimap {
   Multimap<Key,Value>& operator=(const Multimap<Key,Value> &other);
 
   void Insert(const Key& key, const Value &val);
-  bool Remove(const Key& key, const Value &val);
+  bool Remove(const Key& key, const Value &val = Value());
   int Count(const Key& key);
 
   Value& operator[](const Key& key);
@@ -110,7 +120,12 @@ void Multimap<Key, Value>::Insert(const Key &key, const Value &val) {
 
 template<typename Key, typename Value>
 bool Multimap<Key, Value>::Remove(const Key &key, const Value &val) {
-  // todo
+  MultiPair temp;
+  temp.key_ = key;
+  temp.values_.push_back(val);
+
+//  if not removed, return false;
+  return map_.Delete(temp);
 }
 
 template<typename Key, typename Value>
@@ -130,6 +145,6 @@ int Multimap<Key, Value>::Count(const Key &key) {
   return map_.count(temp);
 }
 
-} // end namespace cs008
+} // end namespace cs8
 
 #endif //BACONS_LAW_INCLUDE_MULTIMAP_H_
