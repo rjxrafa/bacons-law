@@ -11,6 +11,7 @@ SOURCES += \
     src/menu.cpp
 
 HEADERS += \
+    include/map.h \
     include/mylib.h \
     include/parser.h \
     include/graph.h \
