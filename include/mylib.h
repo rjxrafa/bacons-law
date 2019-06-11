@@ -1,5 +1,5 @@
 /**
- * @author      Rafael Betita & Ara Mico Segismundo
+ * @authors     Rafael Betita and Ara Mico Segismundo
  * @modified    2019-06-10
  */
 

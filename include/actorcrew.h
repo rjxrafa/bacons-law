@@ -1,5 +1,5 @@
 /**
- * These are nodes used in the graph class to follow connections
+ * These are nodes used in the graph class to create connections
  * and use necessary information between the actors and movies
  *
  * @author      Ara Mico Segismundo & Rafael Betita
@@ -38,6 +38,7 @@ struct Actor
         actorID = id;
         visited = false;
         parent = nullptr;
+        parentM = nullptr;
     }
     ~Actor(){
         actorID = 0;
@@ -45,6 +46,7 @@ struct Actor
         famousMovies.clear();
         visited = false;
         parent = nullptr;
+        parentM = nullptr;
     }
     std::string name;
     int actorID;

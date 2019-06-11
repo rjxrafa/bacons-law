@@ -1,17 +1,15 @@
-/****
- * @author      Rafael Betita & Ara Mico Segismundo
- * @modified    06-1-2019
- ****/
-
 #include "../include/mylib.h"
 
+/**
+ * Checks whether there is input, and changes it.
+ * @brief GetInput
+ * @param input
+ * @param question
+ */
 bool GetInput(std::string &input, std::string &&question) {
+    printf("%s\n", question.c_str());
 
-  printf("%s\n", question.c_str());
+    getline(std::cin, input);
 
-//  std::cin.ignore(256, '\n');
-  getline(std::cin, input);
-
-  return !input.empty();
+    return !input.empty();
 }
-

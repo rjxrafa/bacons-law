@@ -1,9 +1,8 @@
 /**
  * This is a menu interface to give user choices
  *
- * @author  Ara Mico Segismundo and Rafa Betita
+ * @authors  Rafael Betita and Ara Mico Segismundo
  * @modified 2019-06-10
- * @namespace cs8
  */
 
 #ifndef MENU_H

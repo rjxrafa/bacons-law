@@ -1,8 +1,7 @@
 /**
- * This Binary Tree class is based on the Adelson-Velsky and Landis (AVL) self balancing tree.
+ * This is a Linked List Queue Class
  *
- * The class has been adapted from Paul Wilkinson's CS008 lectures and
- * Keith Wood's efficient AVL implementation @ bitlush.com.
+ * The class has been adapted from Paul Wilkinson's CS008 lectures
  *
  * @author      Ara Mico Segismundo & Rafael Betita
  * @modified    2019-06-08
@@ -21,6 +20,11 @@
 namespace cs8 {
 using namespace std;
 template<typename T>
+/**
+ * Queue implenataion as a linked list so it can take
+ * many data without having to resize
+ * @brief The Queue class
+ */
 class Queue
 {
 public:
@@ -33,10 +37,8 @@ public:
     T frontOfQueue() const;
     Queue<T>& operator<<(const T &data);
     Queue<T>& operator>>(T &data);
-    //    void resize(size_t newSize);
     bool empty() const;
     bool full() const;
-    //    int capacity() const;
     int size() const;
     void merge(Queue<T> &one,Queue<T> &two,Queue<T> &merged);
 
@@ -57,6 +59,10 @@ private:
 };
 
 template<typename T>
+/**
+ * Constructor of queue
+ * @brief Queue<T>::Queue
+ */
 Queue<T>::Queue()
 {
     mySize = 0;
@@ -64,6 +70,10 @@ Queue<T>::Queue()
 }
 
 template<typename T>
+/**
+ * Queue destructor uses deleteAll
+ * @brief Queue<T>::~Queue
+ */
 Queue<T>::~Queue()
 {
     deleteAll();
@@ -84,6 +94,12 @@ Queue<T>& Queue<T>::operator=(const Queue<T> &other)
 }
 
 template<typename T>
+/**
+ * Enqeues data into the queue
+ * if empty both are the data if not back keeps moving
+ * @brief Queue<T>::enqueue
+ * @param data
+ */
 void Queue<T>::enqueue(const T &data)
 {
     if(full())
@@ -104,6 +120,11 @@ void Queue<T>::enqueue(const T &data)
 }
 
 template<typename T>
+/**
+ * Merges one and two into a new queue
+ * data in one and two are deleted
+ * @brief Queue<T>::merge
+ */
 void Queue<T>::merge(Queue<T> &one, Queue<T> &two, Queue<T> &merged)
 {
     while(!two.empty() || !one.empty())
@@ -126,6 +147,10 @@ void Queue<T>::merge(Queue<T> &one, Queue<T> &two, Queue<T> &merged)
 }
 
 template<typename T>
+/**
+ * Removes data in queue and returns what it was
+ * @brief Queue<T>::dequeue
+ */
 T Queue<T>::dequeue()
 {
     if(empty())
@@ -141,6 +166,10 @@ T Queue<T>::dequeue()
 }
 
 template<typename T>
+/**
+ * @brief Queue<T>::frontOfQueue
+ * @return data in front of queue
+ */
 T Queue<T>::frontOfQueue() const
 {
     if(empty())
@@ -165,26 +194,6 @@ Queue<T>& Queue<T>::operator>>(T &data)
     return *this;
 }
 
-//template<typename T>
-//void myQueue<T>::resize(size_t newSize)
-//{
-//    node<T> *toBeRemoved;
-//        if(newSize < 2)
-//        {
-//            cout<<"Bad Size"<<endl;
-//            return;
-//        }
-//        myCapacity = newSize;
-//        if(!empty())
-//            while(mySize > myCapacity)
-//            {
-//                toBeRemoved = front;
-//                front = front->next;
-//                delete toBeRemoved;
-//                --mySize;
-//            }
-//}
-
 template<typename T>
 bool Queue<T>::empty() const
 {
@@ -192,6 +201,7 @@ bool Queue<T>::empty() const
 }
 
 template<typename T>
+//Queue full returns false because it will never be full
 bool Queue<T>::full() const
 {
     //queue will never be full
@@ -226,11 +236,6 @@ void Queue<T>::deleteAll()
     mySize = 0;
 }
 
-//template<typename T>
-//int myQueue<T>::capacity() const
-//{
-//    return myCapacity;
-//}
 template<typename T>
 int Queue<T>::size() const
 {
@@ -254,24 +259,13 @@ ostream& operator<<(ostream &out, const Queue<S> &other)
 template<typename S>
 istream& operator>>(istream &in, Queue<S> &other)
 {
-    if(&in != &cin)
-    {
-        int size;
-        string line;
-        getline(in, line);
-        stringstream ss;
-        ss<<line.substr(line.find(':')+1);
-        //        ss>>size;
-        Queue<S> temp;
-        S data;
-        while(in>>data)
-            other<<data;
-        other = temp;
-    }
+    Queue<S> temp;
+    S data;
+    while(in>>data)
+        other<<data;
+    other = temp;
     return in;
 }
 } // namespace
-
-
 
 #endif // MYQUEUE_H
