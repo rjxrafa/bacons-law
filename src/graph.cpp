@@ -31,8 +31,12 @@ Graph::~Graph() {
  */
 void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
     cs8::Queue<int> sixDegrees;
+    std::stringstream ss;
     int actor;
+    std::string lastName;
 
+    ss.str(actorMovies_[actorIndex_[actorNameTo]]->name);
+    ss>>lastName>>lastName;
     //Resetting flags
     for(unsigned int i = 0; i < actorMovies_.size(); ++i)
     {
@@ -52,7 +56,7 @@ void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
     if(actorNameFrom == actorNameTo)
     {
         std::cout<<"------------------------------\n";
-        std::cout<<actorMovies_[actorIndex_[actorNameFrom]]->name<<" Bacon Number is 0.\n";
+        std::cout<<actorMovies_[actorIndex_[actorNameFrom]]->name<<" "<<lastName<<" Number is 0.\n";
         std::cout<<"------------------------------\n";
         return;
     }
@@ -112,7 +116,7 @@ void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
                                 ++baconNumber;
                             }
                             std::cout<<'\n';
-                            std::cout<<actorMovies_[actorIndex_[actorNameFrom]]->name<<"'s Bacon number is "<<baconNumber<<'\n';
+                            std::cout<<actorMovies_[actorIndex_[actorNameFrom]]->name<<"'s "<<lastName<<" number is "<<baconNumber<<'\n';
                             std::cout<<"------------------------------\n";
                             return;
                         }
