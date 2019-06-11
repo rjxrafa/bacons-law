@@ -1,16 +1,16 @@
-#ifndef BACONS_LAW_INCLUDE_AVL_H_
-#define BACONS_LAW_INCLUDE_AVL_H_
-
-/****
+/**
  * This Binary Tree class is based on the Adelson-Velsky and Landis (AVL) self balancing tree.
  *
  * The class has been adapted from Paul Wilkinson's CS008 lectures and
  * Keith Wood's efficient AVL implementation @ bitlush.com.
  *
- * @author      Rafael Betita
+ * @author      Rafael Betita and Ara Mico Segismundo
  * @modified    2019-06-08
  * @namespace   avl
- ****/
+ */
+
+#ifndef BACONS_LAW_INCLUDE_AVL_H_
+#define BACONS_LAW_INCLUDE_AVL_H_
 
 #include "node.h"
 

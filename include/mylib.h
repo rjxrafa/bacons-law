@@ -1,7 +1,7 @@
-/****
+/**
  * @author      Rafael Betita & Ara Mico Segismundo
- * @modified    06-1-2019
- ****/
+ * @modified    2019-06-10
+ */
 
 #ifndef BACONS_LAW_INCLUDE_MYLIB_H_
 #define BACONS_LAW_INCLUDE_MYLIB_H_
@@ -9,7 +9,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include <map>
 #include <iomanip>
 #include <cstdio>
 #include <algorithm>

@@ -1,6 +1,7 @@
 /**
  * This is a map implementation using the AVL tree as the base tree.
- * @author  Rafael Betita
+ *
+ * @author  Rafael Betita and Ara Mico Segismundo
  * @modified 2019-06-08
  * @namespace cs8
  */
@@ -12,6 +13,7 @@
 
 namespace cs8{
 
+//#include <iostream>
 /**
  * This map implementation uses the
  * @tparam Key
@@ -75,12 +77,12 @@ class Map {
 
   Value& operator[](const Key& key);
 
-  template <typename S, typename T>
-  friend
-  std::ostream& operator<<(std::ostream &out, Map<S,T> &other) {
-    out << other.map_;
-    return out;
-  }
+//  template <typename V, typename T>
+//  friend
+//  std::ostream& operator<<(std::ostream &out, Map<V,T> &other) {
+//    out << other.map_;
+//    return out;
+//  }
 
  private:
   avl::BinaryTree<Pair> map_;

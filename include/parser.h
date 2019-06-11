@@ -1,7 +1,7 @@
-/****
+/**
  * @author      Rafael Betita & Ara Mico Segismundo
- * @modified    06-1-2019
- ****/
+ * @modified    2019-06-08
+ */
 
 #ifndef BACONS_LAW_SRC_PARSER_H_
 #define BACONS_LAW_SRC_PARSER_H_
@@ -18,14 +18,12 @@ class Parser {
 
 public:
   Parser();
-  ~Parser() = default;
-  Parser(const Parser &other);
-  Parser& operator=(const Parser &other);
+  ~Parser();
 
-  void PopulateCast(std::map<int, int> &actorID, std::vector<Actor *> &actorMovs, std::vector<Crew *> &movieCrew,
-                    std::map<int, int> &movieID);
-  void PopulateTitles(std::map<int, std::string> &actors);
-  void PopulateActors(std::map<std::string, std::vector<int> > &actorToId, std::map<int, int> &actorID, std::vector<Actor *> &actorMovs);
+  void PopulateCast(cs8::Map<int, int> &actorID, std::vector<Actor *> &actorMovs, std::vector<Crew *> &movieCrew,
+                    cs8::Map<int, int> &movieID);
+  void PopulateTitles(cs8::Map<int, std::string> &movie_titles);
+  void PopulateActors(cs8::Map<std::string, std::vector<int> > &actorToId, cs8::Map<int, int> &actorID, std::vector<Actor *> &actorMovs);
 
  private:
   int getPopularTitles(std::string &title);

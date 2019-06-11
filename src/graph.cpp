@@ -21,7 +21,7 @@ Graph &Graph::operator=(const Graph &other) {
 
 void Graph::GetActorName(int &nconst)
 {
-  if(actorIndex_.count(nconst))
+  if(actorIndex_.Count(nconst))
   {
 //    std::cout<<"Actor found "<<actorMovies_[aIndex_[nconst]][0]<<'\n';
 //    std::cout<<"Movies found "<<actorMovies_[aIndex_[nconst]][1]<<'\n';
@@ -47,13 +47,13 @@ void Graph::GetCast(int &tconst)
 
 void Graph::GetMovieName(int &tconst)
 {
-  if(movies_.count(tconst))
+  if(movies_.Count(tconst))
     std::cout<<"Movie found "<<movies_[tconst]<<'\n';
   else
     std::cout<<"Movie not found.\n";
 }
 
-void Graph::BreadthFirstSearch(std::string &actorName) {
+void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
 //  std::queue<std::string>
 //nm0000102    Kevin Bacon    1958 nm0000102 is 102 in int
     cs8::Queue<int> sixDegrees;
@@ -71,61 +71,14 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
         movieCrew_[i]->visited = false;
     }
 
-
-    //name to nconst
-    //nconst to fakeptr
-    if(!actor_to_id_.count(actorName))
-    {
-        std::cout<<"Actor name not found.\n";
-        return;
-    }
-
-    if(actor_to_id_.at(actorName).size() == 1)
-    {
-        sixDegrees.enqueue(actorMovies_[actorIndex_[actor_to_id_[actorName][0]]]->actorID);
-        origin = actorMovies_[actorIndex_[actor_to_id_[actorName][0]]]->actorID;
-    }
-    else
-    {
-        std::cout<<"Duplicate actors, which actor?\n";
-        for(size_t i = 0; i < actor_to_id_.at(actorName).size(); ++i)
-        {
-            std::cout<<i<<':';
-            if(actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies.size() != 0)
-            {
-                for(size_t j = 0; j < actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies.size(); ++j)
-                {
-                    if(j == actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies.size() - 1)
-                    {
-                        if(movies_.count(actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]))
-                            std::cout<<movies_[actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]];
-                        else
-                            std::cout<<"Movie not found or not in US";
-                    }
-                    else
-                        if(movies_.count(actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]))
-                            std::cout<<movies_[actorMovies_[actorIndex_[actor_to_id_[actorName][i]]]->famousMovies[j]]<<','<<' ';
-                        else
-                            std::cout<<"Movie not found or not in US"<<','<<' ';
-                }
-            }
-            else
-                std::cout<<"No movies";
-
-            std::cout<<'\n';
-        }
-        std::cin >> index;
-        actor = actor_to_id_[actorName][index];
-        origin = actor;
-        sixDegrees.enqueue(actor);
-        std::cin.ignore(256, '\n');
-    }
+    origin = actorNameFrom;
+    sixDegrees.enqueue(actorNameFrom);
 
     int movieIndex, actorIndex, baconNumber = 0;
 
-    if(origin == 102)
+    if(actorNameFrom == actorNameTo)
     {
-        std::cout<<"Kevin Bacon's Bacon Number is 0.\n";
+        std::cout<<actorMovies_[actorIndex_[actorNameFrom]]->name<<" Bacon Number is 0.\n";
         return;
     }
 
@@ -154,29 +107,36 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
 
                         actorIndex = actorIndex_[movieCrew_[movieIndex]->actors[j]];
                         //102 is kevin bacons number
-                        if(movieCrew_[movieIndex]->actors[j] == 102)
+                        if(movieCrew_[movieIndex]->actors[j] == actorNameTo)
                         {
                             if(actorMovies_[actorIndex] != actorMovies_[actorIndex_[actor]])
                             {
-                                actorMovies_[actorIndex_[102]]->parent = actorMovies_[actorIndex_[actor]];
-                                actorMovies_[actorIndex_[102]]->parentM = movieCrew_[movieIndex];
+                                actorMovies_[actorIndex_[actorNameTo]]->parent = actorMovies_[actorIndex_[actor]];
+                                actorMovies_[actorIndex_[actorNameTo]]->parentM = movieCrew_[movieIndex];
                             }
 
-                            Actor *actorTemp = actorMovies_[actorIndex_[102]];
-                            //Crew *movieTemp = movieCrew_[movieIndex];
-                            std::cout<<actorTemp->name<<" in "<<movies_[actorTemp->parentM->movieID] <<" with ";
+                            Actor *actorTemp = actorMovies_[actorIndex_[actorNameTo]];
+                            std::cout<<"------------------------------\n";
+                            if(movies_.Count(actorTemp->parentM->movieID) == 1)
+                            std::cout<<actorTemp->name<<"\n IN \n"<<movies_[actorTemp->parentM->movieID] <<"\n WITH \n";
+                            else
+                                std::cout<<actorTemp->name<<"\n IN \n"<<"Movie not found" <<"\n WITH \n";
                             for(actorTemp = actorTemp->parent ; actorTemp != nullptr; actorTemp = actorTemp->parent)
                             {
                                 if(actorTemp->parent == nullptr)
                                     std::cout<<actorTemp->name;
                                 else
                                 {
-                                    std::cout<<actorTemp->name<<" in "<<movies_[actorTemp->parentM->movieID]<< " with ";
+                                    if(movies_.Count(actorTemp->parentM->movieID) == 1)
+                                    std::cout<<actorTemp->name<<"\n IN \n"<<movies_[actorTemp->parentM->movieID]<< "\n WITH \n";
+                                    else
+                                        std::cout<<actorTemp->name<<"\n IN \n"<<"Movie not found" <<"\n WITH \n";
                                 }
                                 ++baconNumber;
                             }
                             std::cout<<'\n';
-                            std::cout<<actorName<<"'s Bacon number is "<<baconNumber<<'\n';
+                            std::cout<<actorMovies_[actorIndex_[actorNameFrom]]->name<<"'s Bacon number is "<<baconNumber<<'\n';
+                            std::cout<<"------------------------------\n";
                             return;
                         }
                         else
@@ -197,4 +157,98 @@ void Graph::BreadthFirstSearch(std::string &actorName) {
     }
 
     std::cout<<"Chosen person is either not an actor, or does not have enough significance to be in IMDB's title principle file.\n";
+}
+
+bool Graph::GraphGetInput(int &nconst, std::string &&question)
+{
+    bool found = false, done = true;
+    int index = 0, range = 0;
+    size_t notInt;
+    std::string s, s1;
+    printf("%s\n", question.c_str());
+
+    while(!found)
+    {
+        getline(std::cin, s);
+        if(s.empty())
+            exit(0);
+
+        if(!actor_to_id_.Count(s))
+        {
+            std::cout<<"Actor name not found please re-enter a name.\n";
+        }
+        else
+            found = true;
+    }
+
+    if(actor_to_id_[s].size() == 1)
+    {
+        nconst = actorMovies_[actorIndex_[actor_to_id_[s][0]]]->actorID;
+//        sixDegrees.enqueue(actorMovies_[actorIndex_[actor_to_id_[actorNameFrom][0]]]->actorID);
+//        origin = actorMovies_[actorIndex_[actor_to_id_[actorNameFrom][0]]]->actorID;
+        return true;
+    }
+    else
+    {
+        std::cout<<"Duplicate actors, which actor?\n";
+        for(size_t i = 0; i < actor_to_id_[s].size(); ++i)
+        {
+            std::cout<<i<<':';
+            if(actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies.size() != 0)
+            {
+                for(size_t j = 0; j < actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies.size(); ++j)
+                {
+                    if(j == actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies.size() - 1)
+                    {
+                        if(movies_.Count(actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies[j]))
+                            std::cout<<movies_[actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies[j]];
+                        else
+                            std::cout<<"Movie not found or not in US";
+                    }
+                    else
+                        if(movies_.Count(actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies[j]))
+                            std::cout<<movies_[actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies[j]]<<','<<' ';
+                        else
+                            std::cout<<"Movie not found or not in US"<<','<<' ';
+                }
+            }
+            else
+                std::cout<<"No movies";
+
+            std::cout<<'\n';
+            range = i;
+        }
+
+        do
+        {
+            if(GetInput(s1,"Index:"))
+            {
+                notInt = s1.find_first_not_of("0123456789");
+                if(notInt!=std::string::npos)
+                {
+                    std::cout<<"Invalid input. Please re-enter.\n";
+                    done = true;
+                }
+                else
+                {
+                    index = stoi(s1);
+                    if(index <= range && index >= 0)
+                    {
+                        done = false;
+                    }
+                    else
+                    {
+                        std::cout<<"Out of range. Please re-enter.\n";
+                        done = true;
+                    }
+                }
+            }
+        } while(done);
+
+        nconst = actor_to_id_[s][index];
+     //   std::cin.ignore(256, '\n');
+        return true;
+    }
+
+    return !s.empty();
 }

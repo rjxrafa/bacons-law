@@ -1,3 +1,14 @@
+/**
+ * This Binary Tree class is based on the Adelson-Velsky and Landis (AVL) self balancing tree.
+ *
+ * The class has been adapted from Paul Wilkinson's CS008 lectures and
+ * Keith Wood's efficient AVL implementation @ bitlush.com.
+ *
+ * @author      Ara Mico Segismundo & Rafael Betita
+ * @modified    2019-06-08
+ * @namespace   cs8
+ */
+
 #ifndef MYQUEUE_H
 #define MYQUEUE_H
 

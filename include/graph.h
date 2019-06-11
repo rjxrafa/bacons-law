@@ -1,6 +1,8 @@
 /**
- * @author      Rafael Betita & Ara Mico Segismundo
- * @modified    06-02-2019
+ * This is a graph class that does Breadth First Search
+ *
+ * @author      Ara Mico Segismundo & Rafael Betita
+ * @modified    2019-06-10
  */
 
 #ifndef BACONS_LAW_INCLUDE_GRAPH_H_
@@ -22,21 +24,17 @@ class Graph {
   void GetActorName(int &nconst);
   void GetCast(int &tconst);
   void GetMovieName(int &tconst);
-  void BreadthFirstSearch(std::string &actorName);
+  void BreadthFirstSearch(int &actorNameFrom, int &actorNameTo);
+  bool GraphGetInput(int &nconst, std::string &&question);
 
  private:
-//  avl::BinaryTree<int> actors_;
   Parser parser_;
-//  std::vector<actor_pair> actor_;
   std::vector<Actor*> actorMovies_; // [0]=name [1]=movie tconst
   std::vector<Crew*> movieCrew_; //
-  std::map<std::string, std::vector<int>> actor_to_id_; //Actor Name -> Actor ID(if duplicate will pushback other ids with same name)
-  std::map<int, int> movieIndex_; // Movie ID -> Index
-  std::map<int, int> actorIndex_; // Actor ID -> Index
-  std::map<int, std::string> movies_; // Movie ID -> Movie Title
-//  std::multimap <std::string, std::string> cast_; // Movie ID -> Actors
-//  std::vector<std::string> movies_;
-//  std::vector<std::string> actors_;
+  cs8::Map<std::string, std::vector<int>> actor_to_id_; //Actor Name -> Actor ID(if duplicate will pushback other ids with same name)
+  cs8::Map<int, int> movieIndex_; // Movie ID -> Index
+  cs8::Map<int, int> actorIndex_; // Actor ID -> Index
+  cs8::Map<int, std::string> movies_; // Movie ID -> Movie Title
 
 };
 

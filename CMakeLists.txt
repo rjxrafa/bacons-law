@@ -14,8 +14,7 @@ set(INCLUDE include/parser.h
             include/menu.h
             include/node.h
             include/avl.h
-            include/map.h
-            include/multimap.h)
+            include/map.h)
 
 if(MINGW)
     set(CMAKE_EXE_LINKER_FLAGS ${CMAKE_EXE_LINKER_FLAGS} -static-libstdc++)

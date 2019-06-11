@@ -1,3 +1,11 @@
+/**
+ * This is a menu interface to give user choices
+ *
+ * @author  Ara Mico Segismundo and Rafa Betita
+ * @modified 2019-06-10
+ * @namespace cs8
+ */
+
 #ifndef MENU_H
 #define MENU_H
 
@@ -14,8 +22,6 @@ public:
     ~Menu();
 
     void Run();
-
-private:
 };
 
 #endif // MENU_H

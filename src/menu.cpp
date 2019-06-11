@@ -16,11 +16,11 @@ void Menu::Run()
     //    Parser a;
 
         Graph Kevin;
-        std::string actor;
+        int person1, person2;
         std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
-        while(GetInput(actor,"Actor's name to find Bacon number?"))
+        while(Kevin.GraphGetInput(person1,"Actor from:") && Kevin.GraphGetInput(person2,"Actor to:"))
         {
-            Kevin.BreadthFirstSearch(actor);
+            Kevin.BreadthFirstSearch(person1,person2);
         }
 
 }

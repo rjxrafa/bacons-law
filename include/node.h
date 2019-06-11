@@ -1,18 +1,21 @@
-/****
+/**
  * This Node class is the primary container used for the AVL tree implementation. It makes use of
  * parent nodes to enable fast traversal.
  *
+ * It also contains a different node used for queues.
+ *
  * This implementation has been adapted from Paul Wilkinson's CS008 lectures.
  *
- * @author      Rafael Betita
- * @modified    05-25-2019
- * @namespace   bst
- ****/
+ * @author      Rafael Betita & Ara Mico Segismundo
+ * @modified    2019-06-10
+ * @namespace   avl & Q
+ */
 
 #ifndef Node_H
 #define Node_H
 
-#include "mylib.h"
+//#include "mylib.h"
+#include <iostream>
 
 namespace avl{
 

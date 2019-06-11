@@ -1,9 +1,18 @@
+/**
+ * These are nodes used in the graph class to follow connections
+ * and use necessary information between the actors and movies
+ *
+ * @author      Ara Mico Segismundo & Rafael Betita
+ * @modified    2019-06-10
+ */
+
 #ifndef ACTORCREW_H
 #define ACTORCREW_H
 
 #include<vector>
 #include<string>
 
+//Crew Holds the id of the movie, all the actor ids, and if its been visited
 struct Crew
 {
     Crew(int id = 0){
@@ -20,6 +29,8 @@ struct Crew
     bool visited;
 };
 
+//Actor holds the movies they were in with the other
+//the name of the actor, the id, movieIDs, and their famous movieIDs
 struct Actor
 {
     Actor(std::string s = "", int id = 0){
