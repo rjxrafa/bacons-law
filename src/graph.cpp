@@ -49,7 +49,10 @@ void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
         movieCrew_[i]->visited = false;
     }
 
+    actorMovies_[actorIndex_[actorNameFrom]]->visited = true;
     sixDegrees.enqueue(actorNameFrom);
+
+
 
     int movieIndex, actorIndex, baconNumber = 0;
 
@@ -61,17 +64,27 @@ void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
         return;
     }
 
+    if(actorMovies_[actorIndex_[actorNameTo]]->movies.empty())
+    {
+        std::cout<<"Insufficient data for chosen person(s).\n";
+        return;
+    }
+
     while(!sixDegrees.empty())
     {
         actor = sixDegrees.dequeue();
         //if the person has not been visited
-        if(actorMovies_[actorIndex_[actor]]->visited == false) //actorMovies_[actorIndex_[actor]] actor is the id that is put in actorIndex_ to get a index to get the information of an actor in actorMovies_ vector
-        {
+       // if(actorMovies_[actorIndex_[actor]]->visited == false) //actorMovies_[actorIndex_[actor]] actor is the id that is put in actorIndex_ to get a index to get the information of an actor in actorMovies_ vector
+        //{
             //set to being visited
-            actorMovies_[actorIndex_[actor]]->visited = true;
+           // actorMovies_[actorIndex_[actor]]->visited = true;
             //Go thru their movies
             for(int i = 0; i < actorMovies_[actorIndex_[actor]]->movies.size(); ++i)
             {
+                //TODO: IMPLEMENT MAP PROTECTOR
+//                int test = actorMovies_[actorIndex_[actor]]->movies[i];
+//                if(movies_.Count(test))
+//                std::string moviename = movies_[test];
                 movieIndex = movieIndex_[actorMovies_[actorIndex_[actor]]->movies[i]];
 
                 //actorMovies_[actorIndex_[actor]]->movies[i]] returns a tconst that you put in movie index
@@ -79,7 +92,7 @@ void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
                 {
                     //set movie to being visited true so reprocessing does have to be done
                     movieCrew_[movieIndex]->visited = true;
-
+                  // std::cout<<'\n'<< movies_[movieCrew_[movieIndex]->movieID]<<'\n';
                     //check the actors in the movie
                     for(int j = 0; j < movieCrew_[movieIndex]->actors.size(); ++j)
                     {
@@ -88,19 +101,20 @@ void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
                         //if the actor equals the chosen one
                         if(movieCrew_[movieIndex]->actors[j] == actorNameTo)
                         {
-                            if(actorMovies_[actorIndex] != actorMovies_[actorIndex_[actor]])
+                            if(actorMovies_[actorIndex]->name != actorMovies_[actorIndex_[actor]]->name)
                             {
                                 actorMovies_[actorIndex_[actorNameTo]]->parent = actorMovies_[actorIndex_[actor]];
                                 actorMovies_[actorIndex_[actorNameTo]]->parentM = movieCrew_[movieIndex];
                             }
 
+
                             Actor *actorTemp = actorMovies_[actorIndex_[actorNameTo]];
 
                             std::cout<<"------------------------------\n";
                             if(movies_.Count(actorTemp->parentM->movieID) == 1)
-                                std::cout<<actorTemp->name<<"\n IN \n"<<movies_[actorTemp->parentM->movieID] <<"\n WITH \n";
+                                std::cout<<actorTemp->name<<"\n WITH \n"<<movies_[actorTemp->parentM->movieID] <<"\n IN \n";
                             else
-                                std::cout<<actorTemp->name<<"\n IN \n"<<"Movie not found" <<"\n WITH \n";
+                                std::cout<<actorTemp->name<<"\n WITH \n"<<"Movie not found" <<"\n IN \n";
 
                             for(actorTemp = actorTemp->parent ; actorTemp != nullptr; actorTemp = actorTemp->parent)
                             {
@@ -109,9 +123,9 @@ void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
                                 else
                                 {
                                     if(movies_.Count(actorTemp->parentM->movieID) == 1)
-                                        std::cout<<actorTemp->name<<"\n IN \n"<<movies_[actorTemp->parentM->movieID]<< "\n WITH \n";
+                                        std::cout<<actorTemp->name<<"\n WITH \n"<<movies_[actorTemp->parentM->movieID]<< "\n IN \n";
                                     else
-                                        std::cout<<actorTemp->name<<"\n IN \n"<<"Movie not found" <<"\n WITH \n";
+                                        std::cout<<actorTemp->name<<"\n WITH \n"<<"Movie not found" <<"\n IN \n";
                                 }
                                 ++baconNumber;
                             }
@@ -123,20 +137,26 @@ void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
                         else
                         {
                             //Enqueue Actor that isnt the same actor
-                            if(actorMovies_[actorIndex] != actorMovies_[actorIndex_[actor]])
-                            {
-                                actorMovies_[actorIndex]->parent = actorMovies_[actorIndex_[actor]];
-                                actorMovies_[actorIndex]->parentM = movieCrew_[movieIndex];
-                            }
 
-                            sixDegrees.enqueue(movieCrew_[movieIndex]->actors[j]);
+                           // std::cout<<actorMovies_[actorIndex_[movieCrew_[movieIndex]->actors[j]]]->name<<" , ";
+                            if(actorMovies_[actorIndex]->visited == false)
+                            {
+                                if(actorMovies_[actorIndex]->name != actorMovies_[actorIndex_[actor]]->name)
+                                {
+                                    actorMovies_[actorIndex]->parent = actorMovies_[actorIndex_[actor]];
+                                    actorMovies_[actorIndex]->parentM = movieCrew_[movieIndex];
+                                }
+                                actorMovies_[actorIndex]->visited = true;
+                                sixDegrees.enqueue(actorMovies_[actorIndex]->actorID);
+                                //movieCrew_[movieIndex]->actors[j]
+                            }
                         }
                     }
                 }
             }
-        }
+       // }
     }
-    std::cout<<"Chosen person(s) is either not an actor, or does not have enough significance to be in IMDB's title principle file.\n";
+    std::cout<<"Insufficient data for chosen person(s).\n";
 }
 
 /**

@@ -115,7 +115,7 @@ void Parser::PopulateCast(cs8::Map<int, int> &actorID, std::vector<Actor*> &acto
                     Crew *s = new Crew();
                     s->movieID = tconstInt;
                     //s->hasBeenUsed = false;
-                    s->actors.push_back(stoi(nconst));
+                    s->actors.push_back(nconstInt);
                     movieCrew.push_back(s); //push back into [0] movie [1] crew;
                 }
                 else

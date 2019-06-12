@@ -1,4 +1,4 @@
-/* We, Ara Mico Segismundo and Rafa Betita do hereby certify that we
+/* We, Ara Mico Segismundo and Rafael Betita do hereby certify that we
  * have derived no assistance for this project or examination from any
  * sources whatever, whether oral, written, or in print. We also understand
  * that if it is found that we have received
