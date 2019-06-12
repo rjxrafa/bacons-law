@@ -160,6 +160,40 @@ void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
 }
 
 /**
+ * Based on the Levenshtein distance https://en.wikipedia.org/wiki/Levenshtein_distance
+ * and https://rosettacode.org/wiki/Levenshtein_distance
+ *
+ * @brief LevenshteinDistance
+ */
+int LevenshteinDistance(const std::string &nameOne, const std::string &nameTwo)
+{
+    unsigned int nameOneInt = nameOne.size(), nameTwoInt = nameTwo.size();
+    if( nameOneInt==0 ) return nameTwoInt;
+    if( nameTwoInt==0 ) return nameOneInt;
+    unsigned int *diff = new unsigned int[nameTwoInt + 1];
+    for(unsigned int k=0; k<=nameTwoInt; k++)
+        diff[k] = k;
+    for (unsigned int i = 0; i <nameOne.size();++i ){
+        diff[0] = i+1;
+        unsigned int index = i;
+        for (unsigned int j = 0; j <nameTwo.size();++j ){
+            unsigned int upper = diff[j+1];
+            if( nameOne[i] == nameTwo[j] ){
+                diff[j+1] = index;
+            }
+            else{
+                unsigned int t = upper < index ? upper : index;
+                diff[j+1] = (diff[j] < t ? diff[j] : t)+1;
+            }
+            index = upper;
+        }
+    }
+    unsigned int difference = diff[nameTwoInt];
+    delete [] diff;
+    return difference;
+}
+
+/**
  * Input validation for multiple actor names
  * @brief Graph::GraphGetInput
  * @param nconst
@@ -170,9 +204,10 @@ bool Graph::GraphGetInput(int &nconst, std::string &&question)
 {
     bool found = false, done = true;
     int index = 0, range = 0;
-    size_t notInt;
+    int notInt;
     std::string s, s1;
     printf("%s\n", question.c_str());
+    int distance = 0, tempw = 0, indexw = 0;
 
     while(!found)
     {
@@ -181,14 +216,34 @@ bool Graph::GraphGetInput(int &nconst, std::string &&question)
         {
             return false;
         }
-
         if(!actor_to_id_.Count(s))
         {
-            std::cout<<"Actor name not found please re-enter a name.\n";
+            distance = LevenshteinDistance(s, actorMovies_[0]->name);
+            if(distance != 0)
+            for(unsigned int i = 1; i < actorMovies_.size(); ++i)
+            {
+                if(toupper(s[0]) == toupper(actorMovies_[i]->name[0]))
+                {
+                    tempw =  LevenshteinDistance(s,actorMovies_[i]->name);
+                    if(tempw == 0)
+                    {
+                        indexw = i;
+                        break;
+                    }
+                    if(distance > tempw)
+                    {
+                        distance = tempw;
+                        indexw = i;
+                    }
+                }
+            }
+            std::cout<<"Name not found, did you mean "<< actorMovies_[indexw]->name<<'\n';
         }
         else
             found = true;
     }
+
+
 
     if(actor_to_id_[s].size() == 1)
     {
@@ -198,12 +253,12 @@ bool Graph::GraphGetInput(int &nconst, std::string &&question)
     else
     {
         std::cout<<"Duplicate actors, which actor?\n";
-        for(size_t i = 0; i < actor_to_id_[s].size(); ++i)
+        for(unsigned int i = 0; i < actor_to_id_[s].size(); ++i)
         {
             std::cout<<i<<':';
             if(actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies.size() != 0)
             {
-                for(size_t j = 0; j < actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies.size(); ++j)
+                for(unsigned int j = 0; j < actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies.size(); ++j)
                 {
                     if(j == actorMovies_[actorIndex_[actor_to_id_[s][i]]]->famousMovies.size() - 1)
                     {

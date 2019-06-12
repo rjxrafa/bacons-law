@@ -172,8 +172,8 @@ bool Parser::OpenFile(Parser::FILE_OPEN type, std::string fileName) {
             }
             else
             {
-                printf("File not found, please have the?\n"
-                       "actors, cast, and titles .tsv");
+                printf("File(s) not found, please have the \n"
+                       "actors, cast, and titles .tsv\n");
                 exit(0);
             }
         }
