@@ -59,7 +59,7 @@ void Graph::BreadthFirstSearch(int &actorNameFrom, int &actorNameTo) {
     if(actorNameFrom == actorNameTo)
     {
         std::cout<<"------------------------------\n";
-        std::cout<<actorMovies_[actorIndex_[actorNameFrom]]->name<<" "<<lastName<<" Number is 0.\n";
+        std::cout<<actorMovies_[actorIndex_[actorNameFrom]]->name<<"'s "<<lastName<<" Number is 0.\n";
         std::cout<<"------------------------------\n";
         return;
     }
